@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react';
+import React, {useState, useEffect } from 'react';
 import { ResponsivePie } from '@nivo/pie'
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { showIndividual, showQuestion } from '../../../modules/resultSlice';
 import SurveyService from '../../../services/ResultService';
 import { getSurveyDetails } from '../../../modules/result';
 import { getIndividual } from '../../../modules/result';
+import QuestionResult from './QuestionResult';
+import IndividualShow from './IndividualShow';
 // import * as Sentry from "@sentry/react";
 
 const ResultSurvey = () => {
@@ -16,7 +17,7 @@ const ResultSurvey = () => {
   const respondent = useSelector(state => state.result.respondents);
 
   useEffect(() => {
-    if (survey.title === '') {
+    if (survey.id !== surveyId) {
       SurveyService.getSurvey(surveyId).then((res) => {
         dispatch(getSurveyDetails(res.data.result));
       })
@@ -26,16 +27,17 @@ const ResultSurvey = () => {
       // .catch(e => {
       //     Sentry.captureException(e);
       // })
+
     } else {
       console.log("설문지 내용, 응답자 수 데이터가 이미 있습니다.");
       return;
     }
   }, [])
 
-  const address = useSelector(state => state.resultSlice.address);
+  const [address, setAddress] = useState(<IndividualShow />);
 
-  const onIndividual = () => dispatch(showIndividual());
-  const onQuestion = () => dispatch(showQuestion());
+  const onIndividual = () => setAddress(<IndividualShow />);
+  const onQuestion = () => setAddress(<QuestionResult />);
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 ">
@@ -114,7 +116,7 @@ const ResultSurvey = () => {
             <div className="p-2 d-flex flex-column">
               <h2 className="m-2 text-2xl font-weight-bold text-dark w-100 h-100">결론</h2>
               <h2 className="m-3 text-xl font-weight-bold text-dark w-100 h-100">
-                김밥</h2>
+                탕수육</h2>
             </div>
 
           </div>

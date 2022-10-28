@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import { ResponsivePie } from '@nivo/pie'
 import {useSelector, useDispatch} from 'react-redux';
-import SurveyService from '../../services/SurveyService';
-import { getOption } from '../../modules/result';
-import style from "../../css/CreateSurvey.module.css"
+import SurveyService from '../../../../services/ResultService';
+import {getOption} from '../../../../modules/result'
+
 function QuestionListItem(props) {
     const question = props.questions;
     const value = props.value;
@@ -16,12 +16,12 @@ function QuestionListItem(props) {
     const answer_options = [];
     
     useEffect(() => {
-        if (type === "객관식_단일" && options.length === 0) {
-            SurveyService.getQuestionOption(surveyId).then((res) => {
+        if (type === "객관식_단일") {
+            SurveyService.getQuestionOption(surveyId, question.question.id).then((res) => {
                 dispatch(getOption(res.data.result));
             })
-        }
-    },[])
+        } 
+    },[question])
 
 
     const answer = () => {
@@ -41,20 +41,20 @@ function QuestionListItem(props) {
                 }
             }
 
-            return (<div style={{ width: "50vw", height: "240px" }}>
+            return (<div className="lg:h-80">
                 <ResponsivePie
                     data={
                         answer_options
                     }
-                    margin={{ top: 40, left: 50, bottom: 40 }}
+                    margin={{ top: 40, bottom: 80 }}
                     innerRadius={0.5}
                     padAngle={1.8}
-                    cornerRadius={8}
+                    cornerRadius={0}
                     // colors={['lightblue', 'lightgrey', 'lightyellow']}
-                    borderWidth={2}
-                    arcLinkLabelsSkipAngle={0}
+                    borderWidth={1}
+                    arcLinkLabelsSkipAngle={3}
                     arcLinkLabelsTextColor="#000000"
-                    arcLinkLabelsThickness={2}
+                    arcLinkLabelsThickness={1}
                     arcLinkLabelsColor={{ from: 'color' }}
                     arcLabelsSkipAngle={10}
                     theme={{
@@ -77,8 +77,8 @@ function QuestionListItem(props) {
                             direction: 'row', // item 그려지는 방향
                             justify: false, // 글씨, 색상간 간격 justify 적용 여부
                             translateX: 20, // chart와 X 간격
-                            translateY: 40, // chart와 Y 간격
-                            itemsSpacing: 0, // item간 간격
+                            translateY: 60, // chart와 Y 간격
+                            itemsSpacing: 10, // item간 간격
                             itemWidth: 100, // item width
                             itemHeight: 18, // item height
                             itemDirection: 'left-to-right', // item 내부에 그려지는 방향
@@ -92,7 +92,7 @@ function QuestionListItem(props) {
             )
         } else if (type === "객관식_그리드_단일") {
             for (var i = 0; i < answer_count; i++) {
-                array.push(<div style={{ margin: "20px", width: "50vw", textAlign: "center", justifyContent: "center" }}>{question.answer[i].option.contents}</div>)
+                array.push(<div className='mb-1 text-xl'>{question.answer[i].option.contents}</div>)
             }
             return array;
         } else if (type === "만족도") {
@@ -100,21 +100,22 @@ function QuestionListItem(props) {
             for (var i = 0; i < answer_count; i++) {
                 sum = sum + question.answer[i].satisfaction.percent;
             }
-            array.push(<div style={{ margin: "20px", width: "50vw", textAlign: "center", justifyContent: "center" }}>{sum / answer_count}</div>)
+            array.push(<div className='mb-2 text-xl'>{sum / answer_count}</div>)
             return array;
         } else { // 주관식
             for (var i = 0; i < answer_count; i++) {
-                array.push(<div style={{ margin: "20px", width: "50vw", textAlign: "center", justifyContent: "center" }}>{question.answer[i].essay.contents}</div>)
+                array.push(<div className='mb-2 text-xl'>{question.answer[i].essay.contents}</div>)
             }
             return array;
         }
     }
 
     return (
-        <div style={{ marginTop: "30px" }}>
-            <h3>{parseInt(value) === question.question.id && question.question.contents}</h3>
+        <>
+            <h2 className="text-2xl font-bold tracking-tight text-gray-900">{parseInt(value) === question.question.id && question.question.contents}</h2>
             {parseInt(value) === question.question.id && answer()}
-        </div>
+        
+         </>
     );
 }
 

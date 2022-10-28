@@ -29,14 +29,14 @@ export async function logout(){
     const response=axios.delete(`http://localhost:8080/logout/${localStorage.getItem('memberId')}`);
     console.log('logout response',response);
     initialize();
-    return response.data.result;
+    return response;
 }
 
 // clear localStorage
 export function initialize(){
     localStorage.setItem('accessToken',null);
     localStorage.setItem('refreshToken',null);
-    localStorage.setItem('memberId','null');
+    localStorage.setItem('memberId',0);
     localStorage.setItem('email',null);
     localStorage.setItem('name',null);
     //alert('LOGOUT');

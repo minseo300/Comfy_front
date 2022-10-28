@@ -166,7 +166,7 @@ function CreateSurveySend() {
                     else{
                         Axios.post(`${spring_domain}${loc.pathname}/${email}`, state)//editSurvey/1/a@gmail.com
                     }
-                    navigate(`/temporary`)
+                    navigate(`/`)
                 }}
             />
             <CreateSurveyButton

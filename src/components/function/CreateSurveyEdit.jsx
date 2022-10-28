@@ -145,7 +145,6 @@ export function SurveyEdit(props){
                         <SelectBox 
                             id={rootid}
                             onChange={(event)=>{
-                                alert("ChangeQuesType")
                                 dispatch({
                                     type:"change_ques_type",
                                     rootid:rootid,

@@ -13,10 +13,10 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import logo from '../../img/logoComfy4x.jpeg'
 // import GoogleLoginB from '../GoogleLoginB'
 import GoogleLogin from 'react-google-login'
-import { login } from '../../services/MemberService'
+import { login,logout } from '../../services/MemberService'
 import {gapi} from 'gapi-script'
-import { useSelector } from 'react-redux';
-import member, { logout } from '../../modules/member';
+import { useSelector,useDispatch } from 'react-redux';
+import member, { loginMember,logoutMember } from '../../modules/member';
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -61,8 +61,10 @@ const clientId="487333198384-nh6ucotf0f9djvv3u6oemopui89d8p7k.apps.googleusercon
 
 function Header() {
 
+    const Dispatch=useDispatch();
+
     let [isOpen, setIsOpen] = useState(false);
-    let [isLogin, setIsLogin] = useState([]);
+    let [isLogin, setIsLogin] = useState(false);
 
     const member=useSelector(state=>state.member);
     console.log('header member',member.memberId);
@@ -78,10 +80,12 @@ function Header() {
     const onSuccess=(response)=>{
         const params=new URLSearchParams();
         const idToken=response.tokenObj.access_token;
-        login(idToken);
-        closeModal();
+        login(idToken).then((response)=>{
+            console.log('[login] - ',response);
+            loginMember();
+        });
         setIsLogin(true);
-        localStorage.setItem('memberId',1); // TODO: 삭제 예정
+        closeModal();
         console.log('setIsLogin',isLogin);
         // Dispatch(setMember(idToken));
     };
@@ -96,9 +100,7 @@ function Header() {
         gapi.load('client:auth2',start);
     }
     
-    useEffect(()=>{
-        console.log('reducer member changed');
-    },[member])
+
     return (
         <Popover className="relative bg-white">
             <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -270,8 +272,13 @@ function Header() {
                                 <button
                                     type="button"
                                     onClick={() => {
+                                        logout().then((response)=>{
+                                            console.log('[logout] - ',response);
+                                            
+                                            alert("로그아웃");
+                                            Dispatch(logoutMember());
+                                        })
                                         setIsLogin(false);
-                                        alert("로그아웃");
                                     }}
                                     className="rounded-md ml-4 bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
                                 >

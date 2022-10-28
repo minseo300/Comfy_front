@@ -18,7 +18,7 @@ function ViewPostPage(props){
     const [noLoop, setNoLoop] = useState(false);
     const postId=location.state.postId;
     const [successCreatingSurvey,setSuccessCreatingSurvey]=useState(false); // 마음에 드는 설문지 내보내기 하면 저장되었다는 alert -> 띄우기==true / 닫기==false
-
+    var thumbnail;
     useEffect(()=>{
         setSuccessCreatingSurvey(false);
         getPostInfo(postId).then((response)=>{
@@ -53,11 +53,11 @@ function ViewPostPage(props){
             }
 
             setPost(response);
-
+            
         })
     },[]);
-    post.thumbnail='/'+post.thumbnail;
-
+    thumbnail='/images/'+post.thumbnail+'.jpg';
+    // post.thumbnail=(post.thumbnail).substring(1,(post.thumbnail).length);
     console.log('thumbnail: ',post.thumbnail);
     return (
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -74,7 +74,7 @@ function ViewPostPage(props){
                         <div class='flex flex-col' onClick={()=>{
                         // 피설문자가 보는 화면으로 연결 -> 그 약간 설문지 미리보기 느낌~
                         }}>
-                            <img class="md:w-full md:h-4/6 md:rounded-xl" src={post.thumbnail}/>
+                            <img class="md:w-full md:h-4/6 md:rounded-xl" src={thumbnail}/>
                             <div class='font-bold md:h-1/6 text-center text-2xl mt-5 text-sky-500 dark:text-sky-400'>
                                 {post.surveyTitle}
                             </div>                            

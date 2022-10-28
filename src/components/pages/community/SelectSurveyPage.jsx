@@ -15,6 +15,7 @@ function SelectSurveyPage(props) {
     useEffect(() => {
         setCheckSurveyListLength(false);
         getMyFinishedSurvey().then((response)=>{
+            console.log('select survey page - response',response);
             if(response.length===0){
                 setCheckSurveyListLength(true);
             }
@@ -38,7 +39,7 @@ function SelectSurveyPage(props) {
                 </span>
             </div>}
             {!checkSurveyListLength&&<div class="px-5 flex flex-col md:h-full pt-5">
-                <div class='h-96'>
+                <div>
                     <p class="text-2xl font-bold text-gray-900">공유하고 싶은 설문지를 선택해주세요!</p>
                     {<List items={myFinishedSurveyList} type='select_survey' checkSatisfactionAlert={checkSatisfactionAlert}/>}
                 </div>

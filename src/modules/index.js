@@ -11,7 +11,6 @@ const rootReducer=combineReducers({
     member,
     result,
     createsurvey,
-    resultSlice,
     result,
 });
 

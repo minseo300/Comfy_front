@@ -79,7 +79,7 @@ function MainPage(props) {
         </div>
         
 
-        <div class="flex justify-center flex-col">
+        <div class="flex flex-col">
           {/* <div className="flex items-center"> */}
             {postList&&<List items={postList} case_={1} type='post' deletePost={deletePost}/>}
           {/* </div> */}

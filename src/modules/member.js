@@ -7,7 +7,7 @@ const LOGOUT='member/LOGOUT';
 
 //액션 생성 함수
 // export function setMember(data){
-export function loginMember(idToken){
+export function loginMember(){
     return{
         type: LOGIN,
         payload:{

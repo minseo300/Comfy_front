@@ -14,7 +14,8 @@ function ListItem(props) {
     const [buttonShown,setButtonShown]=useState([]);
     const [bookmarkButton,setBookmarkButton]=useState([]);
     const [unbookmarkButton,setUnbookmarkButton]=useState([]);
-    const [postCase,setPostCase]=useState([]);
+    const [post,setPost]=useState([]);
+    const [myPost,setMyPost]=useState([]);
     const [itemCase,setItemCase]=useState([]);
     const [notFinished,setNotFinished]=useState([]);
     const [surveying,setSurveying]=useState([]);
@@ -37,29 +38,35 @@ function ListItem(props) {
             setUnbookmarkButton(true);
         } 
 
-        // mypage
-        if(case_===1) setPostCase(true); // 북마크
-        else setPostCase(false); // 내가 작성한 글 -> 쓰레기통
+        // // mypage
+        // if(case_===1) setPostCase(true); // 북마크
+        // else if(case_===2) {
+        //     console.log('case_: mypostList임');
+        //     setPostCase(false); // 내가 작성한 글 -> 쓰레기통
+        // }
 
-        // community
-        if(item.authorId===localStorage.getItem('memberId')){
-            setPostCase(false);  // 내가 작성한 글 -> 쓰레기통
+        // community, mypage
+        if(item.authorId===Number(localStorage.getItem('memberId'))){
+            setBookmarkButton(false);
+            setUnbookmarkButton(false);
             setSelectSurvey(false);
+            setMyPost(true);
         } 
         else {
-            setPostCase(true); // 북마크
+            setPost(true); // 북마크
             setSelectSurvey(false);
+            setMyPost(false);
         }
 
         if(type==='post') {
             setItemCase(true); // 게시글
             setSelectSurvey(false);
         }
-        else if(type==='select_survey') {
+        else if(type==='select_survey') { // 설문지 작성 시 select survey
             setSelectSurvey(true);
             setBookmarkButton(false);
             setUnbookmarkButton(false);
-            setItemCase(false);
+           
         }
         else {
             setItemCase(false); // 설문지
@@ -108,21 +115,24 @@ function ListItem(props) {
     //     if(unbookmarkButton===false) setUnbookmarkButton(true);
     //     else setUnbookmarkButton(false);
     // },[unbookmarkButton]);
+    var thumbnail='/images/'+item.thumbnail+'.jpg';
     return (
-        <div class="rounded-xl m-5 md:p-0 flex flex-col md:w-1/5 md:h-1/2">
+        <div class="rounded-xl">
             <div class="relative md:w-full md:h-1/2">
-                <img class="md:w-full md:h-1/2 md:rounded-xl mx-auto" src={item.thumbnail}/>
+                <div className="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none ">
+                    <img class="md:w-full md:h-1/2 md:rounded-xl mx-auto" src={thumbnail}/>
+                </div>
                 {/* hover images */}
                 {/* 커뮤니티 게시글 */}
                 {buttonShown&&<div class="absolute bottom-0 opacity-0 hover:opacity-100 md:w-full md:h-full flex justify-center items-end">
-                    {postCase&&bookmarkButton&&<img class="h-7 w-7 mb-5" src="images/emptystar.png" onClick={()=>{
+                    {bookmarkButton&&<img class="h-7 w-7 mb-5" src="images/emptystar.png" onClick={()=>{
                         // 클릭 시 북마크 추가
                         addBookmark(item.postId).then((response)=>{
                             setBookmarkButton(false); // 북마크 된 글 -> 북마크 취소하기 버튼 -> 채워진 별
                             setUnbookmarkButton(true);
                         })
                     }}/>}
-                    {postCase&&unbookmarkButton&&<img class="h-7 w-7 mb-5" src="images/star.png" onClick={()=>{
+                    {unbookmarkButton&&<img class="h-7 w-7 mb-5" src="images/star.png" onClick={()=>{
                         // 클릭 시 북마크 취소
                         deleteBookmark(item.postId).then((response)=>{
                             setBookmarkButton(true);  // 북마크 안된 글 -> 북마크 하기 버튼 -> 빈 별
@@ -130,7 +140,7 @@ function ListItem(props) {
                             deleteBookmarkItem(item.postId);
                         })
                     }}/>}
-                    {!postCase&&<img class="h-7 w-7 mb-5" src="images/trash.png" onClick={()=>{
+                    {myPost&&<img class="h-7 w-7 mb-5" src="images/trash.png" onClick={()=>{
                         // 클릭 시 게시글 삭제
                         deleteMyPost(item.postId).then((response)=>{
                             deletePostItem(response.postId);
@@ -177,16 +187,16 @@ function ListItem(props) {
                 }}>
                 <div>
                     <div className="flex flex-col">
-                        <div className='flex flex-row items-center'>
-                            <h3 className="text-2xl pl-3 text-gray-900 md:w-8/12">
+                        <div className='flex flex-row items-center justify-between'>
+                            <h3 className="mt-4 text-2xl pl-3 text-gray-900 md:w-full">
                                 {item.title}
                             </h3>
-                            {selectSurvey&&<h4 className="text-light opacity-0 hover:opacity-100 text-rose-900 md:w-8/12">
+                            {selectSurvey&&<h4 className="mt-7 text-light opacity-0 hover:opacity-100 text-rose-900 md:w-8/12">
                                 피설문자 만족도: {item.satisfaction}</h4>}
                         </div>
-                        {itemCase&&<p className="mt-1 text-sm pl-3 text-gray-700">작성자: {item.authorName}</p>}
+                        {itemCase&&!selectSurvey&&<p className="mt-1 text-sm pl-3 text-gray-700">작성자: {item.authorName}</p>}
                     </div>
-                    {itemCase&&<p className="text-sm font-medium pl-3 text-gray-500">작성일자: {item.uploadDate}</p>}
+                    {itemCase&&!selectSurvey&&<p className="text-sm font-medium pl-3 text-gray-500">작성일자: {item.uploadDate}</p>}
                 </div>
                     
                     {/* <div class="justify-items-center text-center font-bold pb-2 text-2xl text-sky-500 dark:text-sky-400">
