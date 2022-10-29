@@ -29,7 +29,7 @@ import {
 
 export const spring_domain="http://localhost:8080"//http://172.16.1.151:8080 // localhost:8080
 export const react_domain="http://localhost:3000"//http://172.16.3.121 // localhost:3000
-export const share_domain="http://210.109.62.83"
+export const share_domain="http://www.commfy.com"
 
 function App() {
   return (

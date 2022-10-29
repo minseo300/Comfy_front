@@ -25,8 +25,7 @@ function Shareurl(){
     const st=useSelector(state => state.createsurvey.shareurl_modal);
     const dispatch = useDispatch();
     const [Id, setId] = useState();
-    const surveyId=Id
-
+    const surveyId=Id;
     const loc=useLocation();
     if(state.load_shareurl){
         dispatch({
@@ -37,6 +36,8 @@ function Shareurl(){
         //editSurvey/1/a@gmail.com //createSurvey/a@gmail.com
         Axios.post(`${spring_domain}${loc.pathname}/${email}`, state).then(response=>{
             setId(response.data.result);
+            const surveyId=response.data.result;
+            postSurveyThumbnail(surveyId);
         })
     }
     if(st){

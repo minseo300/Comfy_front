@@ -3,6 +3,9 @@ import { useState, useEffect, Fragment } from 'react';
 import ManageService from '../../../services/ManageService';
 import { Dialog, Transition } from '@headlessui/react'
 import { useNavigate } from 'react-router-dom';
+import member, { loginMember,logoutMember } from '../../../modules/member';
+import { useSelector,useDispatch } from 'react-redux';
+import { logout } from '../../../services/MemberService'
 
 
 
@@ -12,6 +15,8 @@ function TemporarySurvey() {
   const [surveyList, setSurveyList] = useState([])
   const [selectSurveyId, setSelectSurveyId] = useState()
   let [isOpen, setIsOpen] = useState(false)
+  const Dispatch=useDispatch();
+
 
 
   function closeModal() {
@@ -31,10 +36,18 @@ function TemporarySurvey() {
 
   useEffect(() => {
     ManageService.getSurveyByStatus('notFinish').then((res) => {
-      setSurveyList(res.data.result);
-      console.log("survey data : ", res.data.result);
+      if(res.data.code===2002) {
+        logout();
+        Dispatch(logoutMember());
+      }
+      else{
+        setSurveyList(res.data.result);
+        console.log("survey data : ", res.data.result);
+      }
+     
     })
   }, [])
+
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 ">
@@ -113,7 +126,12 @@ function TemporarySurvey() {
                       <button
                         type="button"
                         className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                        onClick={()=> editSurvey(selectSurveyId)}
+                        onClick={()=>{
+                          Dispatch({
+                            type:"reset_template"
+                          })
+                          editSurvey(selectSurveyId)
+                        }}
                       >
                         설문을 수정할래요.
                       </button>

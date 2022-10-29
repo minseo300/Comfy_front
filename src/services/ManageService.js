@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { renew_accessToken } from './MemberService';
+import { renew_accessToken,initialize } from '../modules/member';
 const MANAGESURVEY_API_BASE_URL = "http://localhost:8080/surveyPage";
+
 const accessToken=localStorage.getItem('accessToken');
 const memberId=localStorage.getItem('memberId');
 const refreshToken=localStorage.getItem('refreshToken');
@@ -8,10 +9,10 @@ class ManageSurveyService {
     
     getSurveys(){
         const response=axios.get(MANAGESURVEY_API_BASE_URL,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
-        // if(response.data.code===2002){
-        //     return 100;
-        // }
-        // else renew_accessToken(response.config.headers.ACCESS_TOKEN);
+        if(response.data.code===2002){
+            return 100;
+        }
+        else renew_accessToken(response.config.headers.ACCESS_TOKEN);
         
         return response;
     }
@@ -23,10 +24,10 @@ class ManageSurveyService {
         console.log('[updateSurvey] - accessToken',accessToken);
         console.log('[updateSurvey] - refreshToken',refreshToken);
         const response=axios.patch(`/survey/${surveyId}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}})
-        // if(response.data.code===2002){
-        //     return 100;
-        // }
-        // else renew_accessToken(response.config.headers.ACCESS_TOKEN);
+        if(response.data.code===2002){
+            return 100;
+        }
+        else renew_accessToken(response.config.headers.ACCESS_TOKEN);
         
         return response;
         //axios.put(MANAGESURVEY_API_BASE_URL + '/' + surveyId, survey);
@@ -45,17 +46,17 @@ class ManageSurveyService {
     getSurveyById(memberId,accessToken,refreshToken){
         console.log('manage survey service - memberId',memberId);
         const response=axios.get(`/surveyPage/${memberId}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}})
-        // if(response.data.code===2002){
-        //     return 100;
-        // }
-        // else renew_accessToken(response.config.headers.ACCESS_TOKEN);
+        if(response.data.code===2002){
+            return 100;
+        }
+        else renew_accessToken(response.config.headers.ACCESS_TOKEN);
 
         return response;
         // return axios.get(MANAGESURVEY_API_BASE_URL + '/' + memberId);
     }
 
     getSurveyByStatus(status){
-        return axios.get(MANAGESURVEY_API_BASE_URL + '/' + status+'/'+memberId);
+        return axios.get(MANAGESURVEY_API_BASE_URL + '/' + status+'/'+memberId,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
     }
 
     deleteSurvey(surveyId, memberId,accessToken,refreshToken){
@@ -65,10 +66,10 @@ class ManageSurveyService {
         console.log('[deleteSurvey] - refreshToken',refreshToken);
 
         const response=axios.delete(`/deleteSurvey/${surveyId}/${memberId}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}})
-        // if(response.data.code===2002){
-        //     return 100;
-        // }
-        // else renew_accessToken(response.config.headers.ACCESS_TOKEN);
+        if(response.data.code===2002){
+            return 100;
+        }
+        else renew_accessToken(response.config.headers.ACCESS_TOKEN);
 
         return response;
         // return axios.delete(MANAGESURVEY_API_BASE_URL + '/' + surveyId + '/' + memberId);

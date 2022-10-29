@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { renew_accessToken } from './MemberService';
+import { renew_accessToken,initialize } from '../modules/member';
+
 const accessToken=localStorage.getItem('accessToken');
 const memberId=localStorage.getItem('memberId');
 const refreshToken=localStorage.getItem('refreshToken');
@@ -32,7 +33,7 @@ export async function getMyPagePosts(){
 export async function deleteMyPost(postId){
     const memberId=localStorage.getItem('memberId');
 
-    const response=await axios.delete(`http://localhost:8080/post/${postId}/${memberId}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
+    const response=await axios.delete(`http://localhost:8080/post-status/${postId}/${memberId}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
     console.log('deleteMyPost response: ',response);
     if(response.data.code===2002){
         return 100;
@@ -45,14 +46,18 @@ export async function deleteMyPost(postId){
 // 북마크 등록
 export async function addBookmark(postId){
     const memberId=localStorage.getItem('memberId');
-
+    console.log('[addBookmark] - accessToken: ',accessToken);
+    console.log('[addBoomkark] - refreshToken: ',refreshToken);
     console.log('addBookmark - postId',postId);
-    const response=await axios.post(`http://localhost:8080/bookmark/${postId}/${memberId}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
+    const response=await axios.post(`http://localhost:8080/bookmark/${postId}/${memberId}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${localStorage.getItem('accessToken')}`,'REFRESH_TOKEN':`${localStorage.getItem('refreshToken')}`}});
+    console.log('[ADD BOOKMARK] response',response);
     if(response.data.code===2002){
         return 100;
     }
-    else renew_accessToken(response.config.headers.ACCESS_TOKEN);
-
+    else {
+        console.log('[NEW ACCESS TOKEN] - ',response.config.headers.ACCESS_TOKEN);
+        renew_accessToken(response.config.headers.ACCESS_TOKEN);
+    }
     return response.data.result;
 
 }
@@ -97,7 +102,7 @@ export async function createPost(title,content,surveyId){
     }
     else renew_accessToken(response.config.headers.ACCESS_TOKEN);
 
-      return response.data.code;
+    return response.data.code;
 }
 
 // 게시글 검색

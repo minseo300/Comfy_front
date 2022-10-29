@@ -11,7 +11,7 @@ function MainPage(props) {
   const navigate = useNavigate();
   const [postList, setpostList] = useState([]);
   const [word,setWord]=useState([]);
-  
+  const [newPostButton,setNewPostButton]=useState([]);
   
   // 게시글 삭제 즉시 반영
   const deletePost=(itemId)=>{
@@ -35,16 +35,21 @@ function MainPage(props) {
     getPosts().then((response)=>{
       console.log('mainpage response',response);
       setpostList(response);
+      if(localStorage.getItem('memberId')==='0') {
+        navigate('/');
+        setNewPostButton(false);
+      }
+      else setNewPostButton(true);
     });
     
-  },[]);
+  },[localStorage.getItem('memberId')]);
   // const posts=useSelector(state=>state.post);
   console.log('MainPage - postList',postList);
 
     return (
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div class='flex flex-row items-center'>
-          <button
+          {newPostButton&&<button
             type="button"
             className="mt-5 mr-auto inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             onClick={()=>{
@@ -53,7 +58,7 @@ function MainPage(props) {
             }}
           >
             새로운 글 작성
-          </button>
+          </button>}
           <div class='md:w-2/6 mt-5 ml-96'>   
               <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300">Search</label>
               <div class="relative">

@@ -7,6 +7,8 @@ import { getSurveyDetails } from '../../../modules/result';
 import { getIndividual } from '../../../modules/result';
 import QuestionResult from './QuestionResult';
 import IndividualShow from './IndividualShow';
+import member, { loginMember,logoutMember } from '../../../modules/member';
+import { logout } from '../../../services/MemberService'
 // import * as Sentry from "@sentry/react";
 
 const ResultSurvey = () => {

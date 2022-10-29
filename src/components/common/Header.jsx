@@ -18,6 +18,7 @@ import {gapi} from 'gapi-script'
 import { useSelector,useDispatch } from 'react-redux';
 import member, { loginMember,logoutMember } from '../../modules/member';
 
+
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
@@ -64,10 +65,16 @@ function Header() {
     const Dispatch=useDispatch();
 
     let [isOpen, setIsOpen] = useState(false);
-    let [isLogin, setIsLogin] = useState(false);
+    let [isLogin, setIsLogin] = useState([false]);
 
     const member=useSelector(state=>state.member);
-    console.log('header member',member.memberId);
+
+    useEffect(()=>{
+        console.log('header memberId is changed',typeof(localStorage.getItem('memberId')));
+        if(localStorage.getItem('memberId')==='0') setIsLogin(false);
+        else setIsLogin(true);
+    },[localStorage.getItem('memberId')]);
+
     function closeModal() {
         setIsOpen(false)
     }
@@ -75,16 +82,15 @@ function Header() {
     function openModal() {
         setIsOpen(true)
     }
-
     // 구글 로그인
     const onSuccess=(response)=>{
         const params=new URLSearchParams();
         const idToken=response.tokenObj.access_token;
         login(idToken).then((response)=>{
             console.log('[login] - ',response);
-            loginMember();
+            Dispatch(loginMember());
         });
-        setIsLogin(true);
+        //setIsLogin(true);
         closeModal();
         console.log('setIsLogin',isLogin);
         // Dispatch(setMember(idToken));
@@ -134,7 +140,7 @@ function Header() {
                         </a>
                     }
 
-                    <Popover.Group as="nav" className="hidden space-x-10 md:flex">
+                    {isLogin&&<Popover.Group as="nav" className="hidden space-x-10 md:flex">
                         {/* 설문제작 */}
                         <Popover className="relative">
                             {({ open }) => (
@@ -253,7 +259,7 @@ function Header() {
                                 </>
                             )}
                         </Popover>
-                    </Popover.Group>
+                    </Popover.Group>}
 
 
 
@@ -274,7 +280,6 @@ function Header() {
                                     onClick={() => {
                                         logout().then((response)=>{
                                             console.log('[logout] - ',response);
-                                            
                                             alert("로그아웃");
                                             Dispatch(logoutMember());
                                         })

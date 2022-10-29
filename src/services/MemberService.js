@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { logoutMember,initialize,renew_accessToken } from '../modules/member';
 
 // 구글 로그인
 export async function login(idToken){
@@ -14,12 +15,10 @@ export async function login(idToken){
             localStorage.setItem('memberId',response.data.result.memberId);
             localStorage.setItem('email',response.data.result.email);
             localStorage.setItem('name',response.data.result.memberName);
-            
-
         }
     })
 
-    return response;
+    
 }
 
 // 로그아웃
@@ -28,22 +27,22 @@ export async function logout(){
 
     const response=axios.delete(`http://localhost:8080/logout/${localStorage.getItem('memberId')}`);
     console.log('logout response',response);
-    initialize();
+    
     return response;
 }
 
-// clear localStorage
-export function initialize(){
-    localStorage.setItem('accessToken',null);
-    localStorage.setItem('refreshToken',null);
-    localStorage.setItem('memberId',0);
-    localStorage.setItem('email',null);
-    localStorage.setItem('name',null);
-    //alert('LOGOUT');
+// // clear localStorage
+// export function initialize(){
+//     localStorage.setItem('accessToken',null);
+//     localStorage.setItem('refreshToken',null);
+//     localStorage.setItem('memberId',0);
+//     localStorage.setItem('email',null);
+//     localStorage.setItem('name',null);
+//     //alert('LOGOUT');
 
-}
+// }
 
-// reset accessToken by refreshToken
-export function renew_accessToken(accessToken){
-    localStorage.setItem('accessToken',accessToken);
-}
+// // reset accessToken by refreshToken
+// export function renew_accessToken(accessToken){
+//     localStorage.setItem('accessToken',accessToken);
+// }

@@ -1,7 +1,8 @@
 import React, { useState,useEffect } from "react";
-import { Await, useNavigate } from "react-router-dom";
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { Await, Navigate, useNavigate } from "react-router-dom";
+import member, { loginMember,logoutMember } from '../../../modules/member';
+import { logout } from '../../../services/MemberService'
+import { useSelector,useDispatch } from 'react-redux';
 import List from '../../list/List';
 // import post,{getPosts} from '../../modules/post';
 import axios from 'axios';
@@ -18,18 +19,26 @@ function MyPage(props) {
     //Dispatch(getPosts());
 
     getMyPagePosts().then((response)=>{
-        console.log('mypage response',response);
-        if(response.bookmarks.length===0) setEmptyBookmarkList(true);
-        else if(response.bookmarks.length>0) setEmptyBookmarkList(false);
+        if(response===100){
+          logout();
+          Navigate('/');
+          Dispatch(logoutMember());
+        }
+        else{
+          console.log('mypage response',response);
+          if(response.bookmarks.length===0) setEmptyBookmarkList(true);
+          else if(response.bookmarks.length>0) setEmptyBookmarkList(false);
+          
+          if(response.myposts.length===0) setEmptyMyPostList(true);
+          else if(response.myposts.length>0) setEmptyMyPostList(false);
+
+          setBookmarkList(response.bookmarks);
+          setMypostList(response.myposts);
+
+          console.log('empty bookmark',emptyBookmarkList);
+          console.log('empty my posts',emptyMyPostList);
+        }
         
-        if(response.myposts.length===0) setEmptyMyPostList(true);
-        else if(response.myposts.length>0) setEmptyMyPostList(false);
-
-        setBookmarkList(response.bookmarks);
-        setMypostList(response.myposts);
-
-        console.log('empty bookmark',emptyBookmarkList);
-        console.log('empty my posts',emptyMyPostList);
     });
     
   },[]);
