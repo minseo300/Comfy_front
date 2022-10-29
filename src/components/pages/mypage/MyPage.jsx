@@ -9,20 +9,22 @@ import axios from 'axios';
 import {getMyPagePosts} from '../../../services/PostService';
 function MyPage(props) {
   const Dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [bookmarkList, setBookmarkList] = useState([]);
   const [mypostList, setMypostList] = useState([]);
   const [emptyBookmarkList,setEmptyBookmarkList]=useState([]);
   const [emptyMyPostList,setEmptyMyPostList]=useState([]);
 
+  const member=useSelector(state=>state.member);
 
+ 
   useEffect(()=>{
     //Dispatch(getPosts());
-
     getMyPagePosts().then((response)=>{
-        if(response===100){
-          logout();
-          Navigate('/');
+        if(localStorage.getItem('memberId')==='0'){
           Dispatch(logoutMember());
+          // Navigate('/');
         }
         else{
           console.log('mypage response',response);
@@ -42,6 +44,7 @@ function MyPage(props) {
     });
     
   },[]);
+
 
   // 북마크 취소 즉시 반영
   const deleteBookmark=(itemId)=>{

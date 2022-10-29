@@ -36,8 +36,7 @@ function CreatePostPage(props) {
             setAlert(false);
         })
     }, [])
-    thumbnailPath='/'+surveyInfo.thumbnail;
-    console.log('thumbnailPath: ',thumbnailPath);
+    var thumbnail='/images/'+surveyInfo.thumbnail+'.jpg';
     
     return (
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -51,7 +50,7 @@ function CreatePostPage(props) {
             <div class='flex flex-row h-screen items-center md:w-full justify-center'>
                     <div class='flex flex-row justify-center md:w-full md:h-screen mt-40'>
                         <div class='flex flex-col w-1/2'>
-                            <img class="md:w-full md:h-4/6 object-fill md:rounded-xl" src={thumbnailPath}/>
+                            <img class="md:w-full md:h-4/6 object-fill md:rounded-xl" src={thumbnail}/>
                             <div class='font-bold md:h-1/6 text-center text-2xl mt-5 text-sky-500 dark:text-sky-400'>
                                 {surveyInfo.title}
                             </div>                            

@@ -3,7 +3,7 @@ import { Popover, Transition, Dialog } from '@headlessui/react'
 import {
     Bars3Icon,
     BookmarkSquareIcon,
-    CalendarIcon,
+    Cog8ToothIcon,
     CursorArrowRaysIcon,
     PhoneIcon,
     PlayIcon,
@@ -17,6 +17,7 @@ import { login,logout } from '../../services/MemberService'
 import {gapi} from 'gapi-script'
 import { useSelector,useDispatch } from 'react-redux';
 import member, { loginMember,logoutMember } from '../../modules/member';
+import { Navigate } from 'react-router-dom'
 
 
 function classNames(...classes) {
@@ -42,18 +43,19 @@ const callsToAction = [
     { name: 'Contact Sales', href: '#', icon: PhoneIcon },
 ]
 const resources = [
-    {
-        name: '설문지 관리',
-        description: '설문 진행 중이거나 설문 완료된 설문지를 관리합니다.',
-        href: '/manage',
-        icon: BookmarkSquareIcon,
-    },
+   
     {
         name: '설문지 보관함',
         description: '임시저장된 설문지를 제작합니다.',
         href: '/temporary',
-        icon: CalendarIcon,
+        icon: BookmarkSquareIcon,
     },
+    {
+        name: '설문지 관리',
+        description: '설문 진행 중이거나 설문 완료된 설문지를 관리합니다.',
+        href: '/manage',
+        icon: Cog8ToothIcon,
+    }
 ]
 
 const clientId="487333198384-nh6ucotf0f9djvv3u6oemopui89d8p7k.apps.googleusercontent.com";
@@ -68,6 +70,7 @@ function Header() {
     let [isLogin, setIsLogin] = useState([false]);
 
     const member=useSelector(state=>state.member);
+
 
     useEffect(()=>{
         console.log('header memberId is changed',typeof(localStorage.getItem('memberId')));
@@ -281,7 +284,11 @@ function Header() {
                                         logout().then((response)=>{
                                             console.log('[logout] - ',response);
                                             alert("로그아웃");
+                                            const loc=window.location.pathname;
+                                            console.log('location',window.location.pathname);
+                                            if(loc!=='/community') window.location.replace('/');
                                             Dispatch(logoutMember());
+
                                         })
                                         setIsLogin(false);
                                     }}

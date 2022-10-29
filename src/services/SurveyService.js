@@ -49,13 +49,14 @@ export async function makeSurveyFromPost(surveyId){
     console.log('makeSurveyFromPost - surveyId',surveyId);
     
     const response=await axios.post(`http://localhost:8080/created-survey/${surveyId}/${localStorage.getItem('memberId')}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
-    console.log('makeSurveyFromPost',response);
-    if(response.data.code===2002){
-        return 100;
-    }
-    else renew_accessToken(response.config.headers.ACCESS_TOKEN);
+        
+    
+    // if(response.data.code===2002){
+    //     return 100;
+    // }
+    // else renew_accessToken(response.config.headers.ACCESS_TOKEN);
 
-    return response.data.code;
+    return response;
 }
 
 // 본인이 만든 설문지 중 설문 완료된 설문지 조회

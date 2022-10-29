@@ -12,7 +12,8 @@ function MainPage(props) {
   const [postList, setpostList] = useState([]);
   const [word,setWord]=useState([]);
   const [newPostButton,setNewPostButton]=useState([]);
-  
+  const member=useSelector(state=>state.member);
+
   // 게시글 삭제 즉시 반영
   const deletePost=(itemId)=>{
     const afterDeleteItemList=postList.filter((it)=>it.postId!==itemId);
@@ -36,13 +37,11 @@ function MainPage(props) {
       console.log('mainpage response',response);
       setpostList(response);
       if(localStorage.getItem('memberId')==='0') {
-        navigate('/');
         setNewPostButton(false);
       }
       else setNewPostButton(true);
     });
-    
-  },[localStorage.getItem('memberId')]);
+  },[member]);
   // const posts=useSelector(state=>state.post);
   console.log('MainPage - postList',postList);
 

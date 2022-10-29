@@ -57,10 +57,10 @@ function ManageSurvey() {
 
     <div className="mx-auto max-w-7xl px-4 sm:px-6 ">
       {/* 설문중 */}
-      <SurveyingItem surveyItemList={surveyingList} />
+      <SurveyingItem/>
 
       {/* 설문완료  */}
-      <FinishedItem surveyItemList={finishList} />
+      <FinishedItem />
     </div>
 
   )

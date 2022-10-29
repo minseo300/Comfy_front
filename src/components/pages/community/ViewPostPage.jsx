@@ -3,7 +3,7 @@ import { useNavigate, useParams,useLocation } from "react-router-dom";
 import {useDispatch} from 'react-redux';
 import { useSelector } from 'react-redux';
 import { getPostInfo,addBookmark,deleteBookmark,deleteMyPost } from "../../../services/PostService";
-import { makeSurveyFromPost } from "../../../services/SurveyService";
+import { makeSurveyFromPost, postSurveyThumbnail } from "../../../services/SurveyService";
 
 
 function ViewPostPage(props){
@@ -104,10 +104,11 @@ function ViewPostPage(props){
                                             {!myPost&&<img class='h-7 w-7 mb-5 justify-self-end' src="/images/share.png" onClick={()=>{
                                                 // 클릭 시 해당 게시물의 설문지 임시저장
                                                 makeSurveyFromPost(post.surveyId).then((response)=>{
-                                                    if(response===1000){
+                                                    if(response.data.code===1000){
                                                         // setSuccessCreatingSurvey(true);
                                                         setSuccessCreatingSurvey(true);
                                                         console.log('successCreatingSurvey',successCreatingSurvey);
+                                                        postSurveyThumbnail(response.data.result.surveyId);
                                                         setTimeout(function() {
                                                             setSuccessCreatingSurvey(false);
                                                         }, 3000);
