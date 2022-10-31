@@ -58,7 +58,7 @@ function Shareurl(){
                 </div>
                 <div className={style.row_container}>
                     <p className={style.text_name}>배포 주소 :&nbsp;</p>
-                    <p className={style.text}>{share_domain}/respondentSurvey/{surveyId}</p>
+                    <p className={style.text}>http://www.commfy.shop:3000/respondentSurvey/{surveyId}</p>
                 </div>
             </div>
         )

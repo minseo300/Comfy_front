@@ -10,7 +10,7 @@ export async function getPosts(){
     const memberId=localStorage.getItem('memberId');
     // if(localStorage.getItem('memberId')==='null') memberId=0;
     // else memberId=localStorage.getItem('memberId');
-    const response=await axios.get(`http://localhost:8080/community/${memberId}`);
+    const response=await axios.get(`http://210.109.62.25:8080/community/${memberId}`);
     console.log('getPosts response: ',response);
     return response.data.result;
 }
@@ -19,7 +19,7 @@ export async function getPosts(){
 export async function getMyPagePosts(){
     const memberId=localStorage.getItem('memberId');
 
-    const response=await axios.get(`http://localhost:8080/myPage/${memberId}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
+    const response=await axios.get(`http://210.109.62.25:8080/myPage/${memberId}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
     console.log('getMyPagePosts response: ',response);
     if(response.data.code===2002){
         return 100;
@@ -33,7 +33,7 @@ export async function getMyPagePosts(){
 export async function deleteMyPost(postId){
     const memberId=localStorage.getItem('memberId');
 
-    const response=await axios.delete(`http://localhost:8080/post-status/${postId}/${memberId}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
+    const response=await axios.delete(`http://210.109.62.25:8080/post-status/${postId}/${memberId}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
     console.log('deleteMyPost response: ',response);
     if(response.data.code===2002){
         return 100;
@@ -49,7 +49,7 @@ export async function addBookmark(postId){
     console.log('[addBookmark] - accessToken: ',accessToken);
     console.log('[addBoomkark] - refreshToken: ',refreshToken);
     console.log('addBookmark - postId',postId);
-    const response=await axios.post(`http://localhost:8080/bookmark/${postId}/${memberId}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${localStorage.getItem('accessToken')}`,'REFRESH_TOKEN':`${localStorage.getItem('refreshToken')}`}});
+    const response=await axios.post(`http://210.109.62.25:8080/bookmark/${postId}/${memberId}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${localStorage.getItem('accessToken')}`,'REFRESH_TOKEN':`${localStorage.getItem('refreshToken')}`}});
     console.log('[ADD BOOKMARK] response',response);
     if(response.data.code===2002){
         return 100;
@@ -67,7 +67,7 @@ export async function deleteBookmark(postId){
     const memberId=localStorage.getItem('memberId');
 
     console.log('deleteBookmark - postId',postId);
-    const response=await axios.delete(`http://localhost:8080/bookmark/${postId}/${memberId}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
+    const response=await axios.delete(`http://210.109.62.25:8080/bookmark/${postId}/${memberId}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
     if(response.data.code===2002){
         return 100;
     }
@@ -82,7 +82,7 @@ export async function getPostInfo(postId){
 
     console.log('getPostInfo - postId',postId);
 
-    const response=await axios.get(`http://localhost:8080/post/${postId}/${memberId}`);
+    const response=await axios.get(`http://210.109.62.25:8080/post/${postId}/${memberId}`);
 
     return response.data.result;
 }
@@ -90,7 +90,7 @@ export async function getPostInfo(postId){
 // 게시글 등록
 export async function createPost(title,content,surveyId){
     const response=await axios.post(
-        "http://localhost:8080/posting",{
+        "http://210.109.62.25:8080/posting",{
             title:title,
             contents:content,
             memberId:localStorage.getItem('memberId'),
@@ -108,7 +108,7 @@ export async function createPost(title,content,surveyId){
 // 게시글 검색
 export async function getSearchedPosts(word){
     const response = await axios.get(
-        "http://localhost:8080/search?word=" + word,{
+        "http://210.109.62.25:8080/search?word=" + word,{
           params:{
               title:word
           }

@@ -27,9 +27,9 @@ import {
   Route
 } from "react-router-dom";
 
-export const spring_domain="http://localhost:8080"//http://172.16.1.151:8080 // localhost:8080
-export const react_domain="http://localhost:3000"//http://172.16.3.121 // localhost:3000
-export const share_domain="http://www.commfy.com"
+export const spring_domain="http://210.109.62.25:8080"//http://172.16.1.151:8080 // localhost:8080
+// export const react_domain="http://localhost:3000"//http://172.16.3.121 // localhost:3000
+export const share_domain="http://www.commfy.shop:3000"
 
 function App() {
   return (
