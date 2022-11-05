@@ -58,8 +58,8 @@ const resources = [
     }
 ]
 
-// const clientId="487333198384-nh6ucotf0f9djvv3u6oemopui89d8p7k.apps.googleusercontent.com";
-const clientId="150579669124-iuljf351licgh2lg7s35t1fcn9ct6k2h.apps.googleusercontent.com";
+const clientId="487333198384-nh6ucotf0f9djvv3u6oemopui89d8p7k.apps.googleusercontent.com";
+//const clientId="150579669124-iuljf351licgh2lg7s35t1fcn9ct6k2h.apps.googleusercontent.com";
 
 
 
@@ -69,14 +69,21 @@ function Header() {
 
     let [isOpen, setIsOpen] = useState(false);
     let [isLogin, setIsLogin] = useState([false]);
+    const [logoutAlert,setLogoutAlert]=useState([false]);
 
     const member=useSelector(state=>state.member);
 
 
     useEffect(()=>{
         console.log('header memberId is changed',typeof(localStorage.getItem('memberId')));
-        if(localStorage.getItem('memberId')==='0') setIsLogin(false);
-        else setIsLogin(true);
+        if(localStorage.getItem('memberId')==='0') {
+            setIsLogin(false);
+            setLogoutAlert(true);
+        }
+        else {
+            setIsLogin(true);
+            setLogoutAlert(false);
+        }
     },[localStorage.getItem('memberId')]);
 
     function closeModal() {
@@ -86,6 +93,7 @@ function Header() {
     function openModal() {
         setIsOpen(true)
     }
+
     // 구글 로그인
     const onSuccess=(response)=>{
         const params=new URLSearchParams();
@@ -114,7 +122,11 @@ function Header() {
     return (
         <Popover className="relative bg-white">
             <div className="mx-auto max-w-7xl px-4 sm:px-6">
+                {logoutAlert&&<div class="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3" role="alert">
+                    <p class="font-bold text-center">Comfy의 편안한 설문 시스템을 사용하고 싶으시면 로그인해주세요!</p>
+                </div>}
                 <div className="flex items-center justify-between border-b-2 border-gray-100 py-3 md:justify-start md:space-x-10 ">
+                    
                     <div className="flex justify-start lg:w-0 lg:flex-1">
                         {/* 로고 */}
                         <a href="/">
@@ -284,7 +296,6 @@ function Header() {
                                     onClick={() => {
                                         logout().then((response)=>{
                                             console.log('[logout] - ',response);
-                                            alert("로그아웃");
                                             const loc=window.location.pathname;
                                             console.log('location',window.location.pathname);
                                             if(loc!=='/community') window.location.replace('/');

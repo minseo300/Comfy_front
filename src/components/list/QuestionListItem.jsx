@@ -1,27 +1,37 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import { ResponsivePie } from '@nivo/pie'
-import {useSelector, useDispatch} from 'react-redux';
+import { ResponsiveBar } from '@nivo/bar'
+import {  useDispatch } from 'react-redux';
 import SurveyService from '../../../../services/ResultService';
-import {getOption} from '../../../../modules/result'
 
 function QuestionListItem(props) {
     const question = props.questions;
     const value = props.value;
     const type = question.question.type;
     const { surveyId } = useParams();
-    const options = useSelector(state => state.result.options);
+
+    const [options,setOption] = useState([]);
+    const [gridOptions, setGridOption] = useState([]);
+
     const dispatch = useDispatch();
     const answer_count = question.answer.length;
     const answer_options = [];
-    
+
     useEffect(() => {
         if (type === "객관식_단일") {
             SurveyService.getQuestionOption(surveyId, question.question.id).then((res) => {
-                dispatch(getOption(res.data.result));
+                setOption(res.data.result);
             })
-        } 
-    },[question])
+        } else if (type == "객관식_그리드_단일") {
+            SurveyService.getQuestionOption(surveyId, question.question.id).then((res) => {
+                setOption(res.data.result);
+            })
+            SurveyService.getGridOption(surveyId, question.question.id).then((res) => {
+                setGridOption(res.data.result);
+            })
+        }
+    }, [question])
 
 
     const answer = () => {
@@ -31,7 +41,7 @@ function QuestionListItem(props) {
             for (let i = 0; i < options.length; i++) {
                 answer_options.push({ id: options[i].contents, value: 0 })
             }
-            
+
             for (let i = 0; i < answer_count; i++) {
                 for (let j = 0; j < options.length; j++) {
                     if (question.answer[i].option.id === options[j].id) {
@@ -91,10 +101,121 @@ function QuestionListItem(props) {
             </div>
             )
         } else if (type === "객관식_그리드_단일") {
-            for (var i = 0; i < answer_count; i++) {
-                array.push(<div className='mb-1 text-xl'>{question.answer[i].option.contents}</div>)
+            const answer_op = {};
+            const answer = [];
+
+            for (var i = 0; i < gridOptions.length; i++) {
+                for (var j = 0; j < options.length; j++) {
+                    const obj = { [options[j].contents]: 0 }
+                    Object.assign(answer_op, obj);
+                }
+
+                const a = Object.assign({ contents: gridOptions[i].contents }, answer_op)
+                answer.push(a);
             }
-            return array;
+
+
+            for (let i = 0; i < answer.length; i++) {
+                for (let j = 0; j < answer_count; j++) {
+                    for (let k = 0; k < options.length; k++) {
+                        if (answer[i].contents === question.answer[j].grid.contents
+                            && question.answer[j].option.contents === options[k].contents) {
+                            answer[i][options[k].contents]++;
+                        }
+                    }
+                }
+            }
+
+            const dataKeys = options.map((key)=> {
+                return key.contents;
+            });
+
+            // for (var i = 0; i < answer_count; i++) {
+            //     array.push(<div className='mb-1 text-xl'>{question.answer[i].option.contents}</div>)
+            // }
+
+            return (<div className="lg:h-80">
+                <ResponsiveBar
+                    data={answer}
+                    keys={
+                        dataKeys
+                    }
+                    indexBy="contents"
+                    margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+                    padding={0.3}
+                    valueScale={{ type: 'linear' }}
+                    indexScale={{ type: 'band', round: true }}
+                    colors={{ scheme: 'nivo' }}
+
+                    borderColor={{
+                        from: 'color',
+                        modifiers: [
+                            [
+                                'darker',
+                                1.6
+                            ]
+                        ]
+                    }}
+                    axisTop={null}
+                    axisRight={null}
+                    axisBottom={{
+                        tickSize: 5,
+                        tickPadding: 5,
+                        tickRotation: 0,
+                        legend: 'Grid',
+                        legendPosition: 'middle',
+                        legendOffset: 32
+                    }}
+                    axisLeft={{
+                        tickSize: 5,
+                        tickPadding: 5,
+                        tickRotation: 0,
+                        legend: 'Option',
+                        legendPosition: 'middle',
+                        legendOffset: -40
+                    }}
+                    labelSkipWidth={12}
+                    labelSkipHeight={12}
+                    labelTextColor={{
+                        from: 'color',
+                        modifiers: [
+                            [
+                                'darker',
+                                1.6
+                            ]
+                        ]
+                    }}
+                    legends={[
+                        {
+                            dataFrom: 'keys',
+                            anchor: 'bottom-right',
+                            direction: 'column',
+                            justify: false,
+                            translateX: 120,
+                            translateY: 0,
+                            itemsSpacing: 2,
+                            itemWidth: 100,
+                            itemHeight: 20,
+                            itemDirection: 'left-to-right',
+                            itemOpacity: 0.85,
+                            symbolSize: 20,
+                            effects: [
+                                {
+                                    on: 'hover',
+                                    style: {
+                                        itemOpacity: 1
+                                    }
+                                }
+                            ]
+                        }
+                    ]}
+                    role="application"
+                    ariaLabel="Nivo bar chart demo"
+                    barAriaLabel={function (e) { return e.id + ": " + e.formattedValue + " Grid: " + e.indexValue }}
+                />
+            </div>
+            )
+
         } else if (type === "만족도") {
             let sum = 0;
             for (var i = 0; i < answer_count; i++) {
@@ -114,8 +235,8 @@ function QuestionListItem(props) {
         <>
             <h2 className="text-2xl font-bold tracking-tight text-gray-900">{parseInt(value) === question.question.id && question.question.contents}</h2>
             {parseInt(value) === question.question.id && answer()}
-        
-         </>
+
+        </>
     );
 }
 

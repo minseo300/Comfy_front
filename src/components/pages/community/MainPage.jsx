@@ -42,6 +42,7 @@ function MainPage(props) {
       else setNewPostButton(true);
     });
   },[member]);
+  
   // const posts=useSelector(state=>state.post);
   console.log('MainPage - postList',postList);
 

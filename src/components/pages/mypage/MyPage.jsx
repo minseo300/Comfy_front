@@ -13,21 +13,28 @@ function MyPage(props) {
 
   const [bookmarkList, setBookmarkList] = useState([]);
   const [mypostList, setMypostList] = useState([]);
-  const [emptyBookmarkList,setEmptyBookmarkList]=useState([]);
-  const [emptyMyPostList,setEmptyMyPostList]=useState([]);
+  const [emptyBookmarkList,setEmptyBookmarkList]=useState();
+  const [emptyMyPostList,setEmptyMyPostList]=useState();
 
   const member=useSelector(state=>state.member);
-
  
   useEffect(()=>{
     //Dispatch(getPosts());
     getMyPagePosts().then((response)=>{
-        if(localStorage.getItem('memberId')==='0'){
+        console.log('mypage response',response);
+        if(response===100){
+          alert("Comfy를 사용하고 싶으시면 로그인해주세요!");
           Dispatch(logoutMember());
-          // Navigate('/');
+          navigate('/community');
         }
+        // if(localStorage.getItem('memberId')==='0'){
+        //   Dispatch(logoutMember());
+        //   // Navigate('/');
+        // }
         else{
           console.log('mypage response',response);
+          
+
           if(response.bookmarks.length===0) setEmptyBookmarkList(true);
           else if(response.bookmarks.length>0) setEmptyBookmarkList(false);
           
@@ -36,7 +43,7 @@ function MyPage(props) {
 
           setBookmarkList(response.bookmarks);
           setMypostList(response.myposts);
-
+          
           console.log('empty bookmark',emptyBookmarkList);
           console.log('empty my posts',emptyMyPostList);
         }
@@ -44,6 +51,16 @@ function MyPage(props) {
     });
     
   },[]);
+
+  useEffect(()=>{
+    if(bookmarkList.length===0) setEmptyBookmarkList(true);
+    else if(bookmarkList.length>0) setEmptyBookmarkList(false);
+  },[bookmarkList]);
+
+  useEffect(()=>{
+    if(mypostList.length===0) setEmptyMyPostList(true);
+    else if(mypostList.length>0) setEmptyMyPostList(false);
+  },[mypostList]);
 
 
   // 북마크 취소 즉시 반영
@@ -66,7 +83,7 @@ function MyPage(props) {
           <div class='md:h-fit'>
               <p class="text-2xl font-bold text-gray-900">즐겨찾기</p>
               {emptyBookmarkList&&<div className="h-96 flex justify-center items-center text-2xl text-bold text-sky-400">마음에 드는 게시물을 즐겨찾기 해보세요!</div>}
-              {bookmarkList&&<List items={bookmarkList} case_={1} type='post' deleteBookmark={deleteBookmark}/>}
+              {bookmarkList&&<List items={bookmarkList} case_={2} type='post' deleteBookmark={deleteBookmark}/>}
           </div>
 
           <div class='md:h-fit'>

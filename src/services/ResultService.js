@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { renew_accessToken,initialize } from '../modules/member';
-const SURVEY_API_BASE_URL = "http://210.109.62.25:8080/resultSurvey";
+
+const SURVEY_API_BASE_URL = "http://localhost:8080/resultSurvey";
 
 
 class SurveyService {
@@ -25,6 +25,11 @@ class SurveyService {
         return axios.get(SURVEY_API_BASE_URL + '/question/option/' +surveyId + '/' + questionId);
     }
 
+    getGridOption(surveyId, questionId){
+        return axios.get(SURVEY_API_BASE_URL + '/question/grid/' +surveyId + '/' + questionId);
+    }
+
+    
     postSatisfaction(surveyId,satisfaction){
         axios.post(SURVEY_API_BASE_URL+'/satisfaction/'+surveyId+'/'+localStorage.getItem('memberId')+'/'+satisfaction)
         .then((response)=>{

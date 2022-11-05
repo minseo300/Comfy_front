@@ -5,10 +5,12 @@ import { useSelector } from 'react-redux';
 import {addBookmark, deleteBookmark, deleteMyPost} from '../../services/PostService';
 import { useCallback } from "react";
 import { deleteSurvey, updateSurveyStatus } from "../../services/SurveyService";
+import member,{ logoutMember } from "../../modules/member";
 
 function ListItem(props) {
     const {key,item,case_,type,survey_type, onClick,deletePostItem,deleteBookmarkItem,deleteSurveyItem,goFinishedSurveyItem,checkSatisfactionAlert}=props;
     const navigate=useNavigate();
+    const Dispatch = useDispatch();
     // buttonShown: 회원인지/비회원인지, bookmark_button: 북마크하기 버튼, unbookmark_button: 북마크 취소 버튼, 
     // post_case: 내가 작성한 글인지/남이 작성한 글인지, item_case: 게시글인지/설문지인지, 
     const [buttonShown,setButtonShown]=useState([]);
@@ -22,11 +24,14 @@ function ListItem(props) {
     const [finished,setFinished]=useState([]);
     const [selectSurvey,setSelectSurvey]=useState([]);
 
+    const member=useSelector(state=>state.member);
 
 
     useEffect(()=>{
         setSelectSurvey(false);
+    
         if(item.member_case===false) setButtonShown(false); // 비회원의 커뮤니티 접근
+        else if(localStorage.getItem('memberId')==='0') setButtonShown(false);
         else setButtonShown(true); //회원의 커뮤니티 접근
     
         if(item.isBookmarked==false) {  // 북마크 안된 글 -> 북마크 하기 버튼 -> 빈 별
@@ -98,7 +103,7 @@ function ListItem(props) {
             setBookmarkButton(false);
             setUnbookmarkButton(false);
         }
-    },[]);
+    },[localStorage.getItem('memberId')]);
     
     // item.thumbnail='./'+item.thumbnail;
     // useCallback(()=>{
@@ -128,16 +133,24 @@ function ListItem(props) {
                     {bookmarkButton&&<img class="h-7 w-7 mb-5" src="images/emptystar.png" onClick={()=>{
                         // 클릭 시 북마크 추가
                         addBookmark(item.postId).then((response)=>{
-                            setBookmarkButton(false); // 북마크 된 글 -> 북마크 취소하기 버튼 -> 채워진 별
-                            setUnbookmarkButton(true);
+                            if(response===100) Dispatch(logoutMember());
+                            else{
+                                setBookmarkButton(false); // 북마크 된 글 -> 북마크 취소하기 버튼 -> 채워진 별
+                                setUnbookmarkButton(true);
+                            }
+                            
                         })
                     }}/>}
                     {unbookmarkButton&&<img class="h-7 w-7 mb-5" src="images/star.png" onClick={()=>{
                         // 클릭 시 북마크 취소
                         deleteBookmark(item.postId).then((response)=>{
-                            setBookmarkButton(true);  // 북마크 안된 글 -> 북마크 하기 버튼 -> 빈 별
-                            setUnbookmarkButton(false);
-                            deleteBookmarkItem(item.postId);
+                            if(response===100) Dispatch(logoutMember());
+                            else{
+                                setBookmarkButton(true);  // 북마크 안된 글 -> 북마크 하기 버튼 -> 빈 별
+                                setUnbookmarkButton(false);
+                                if(case_===2)deleteBookmarkItem(item.postId);
+                            }
+                            
                         })
                     }}/>}
                     {myPost&&<img class="h-7 w-7 mb-5" src="images/trash.png" onClick={()=>{

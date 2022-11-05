@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux';
 import {useDispatch} from 'react-redux';
 import {getMyFinishedSurvey} from '../../../services/SurveyService';
 import List from '../../list/List';
+import ManageService from '../../../services/ManageService'
+
 
 function SelectSurveyPage(props) {
     const navigate = useNavigate();
@@ -14,16 +16,17 @@ function SelectSurveyPage(props) {
     const [checkSatisfaction,setCheckSatisfaction]=useState([]); 
     useEffect(() => {
         setCheckSurveyListLength(false);
-        getMyFinishedSurvey().then((response)=>{
-            console.log('select survey page - response',response);
-            if(response.length===0){
+        ManageService.getSurveyByStatus('finish').then((response) => {
+            console.log('select survey page - response',response.data.result);
+            if(response.data.result.length===0){
                 setCheckSurveyListLength(true);
             }
             else{
-                setMyFinishedSurveyList(response);
+                setMyFinishedSurveyList(response.data.result);
             }
             setCheckSatisfaction(false);
-        })
+            console.log("survey data : ", response.data.result);
+          })
     }, [])
 
     const checkSatisfactionAlert=()=>{

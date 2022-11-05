@@ -1,47 +1,37 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import QuestionListItem from './QuestionListItem';
 
-const Select = styled.select`
-	display: block;
-	width: 100px;
-    height:40px;
-    margin:25px;
-	padding: 8px;
-	font-size: inherit;
-	line-height: inherit;
-	border: 1px solid;
-	border-radius: 4px;
-	color: inherit;
-	&:focus {
-		border-color: red;
-	}
-`;
 
 const QuestionList = (props) => {
     const { questions } = props;
 
     const options = [];
     for(let i=0; i<questions.length; i++){
-        questions[i].question.id = i+1;
         options.push({value: questions[i].question.id, label: '문항 ' + (i+1)})
     }
 
-    const [value, setValue] = useState(1);
+    const questionId = useSelector(state => state.result.questionId);
+    const [value, setValue] = useState(0);
+
+    useEffect(()=> {
+        setValue(questionId);
+    }, [questionId])
 
     const handleChange = (event) => {
         setValue(event.target.value);
     }
 
     return (
-        <div style={{ display: "flex" }}>
-            <Select value={value} onChange={handleChange}>
+        <div className='text-center w-full h-full'>
+
+            <select className="block appearance-none text-2xl lg:w-40 lg:h-16 mt-6 ml-6 pl-5 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value={value} onChange={handleChange}>
                 {options && options.map((option) => (
                     <option value={option.value}>{option.label}</option>
                 ))}
-            </Select>
+            </select>
 
-            <div>
                 {questions && questions.map((question) => {
                     return (
                         <QuestionListItem
@@ -50,7 +40,7 @@ const QuestionList = (props) => {
                         />
                     )
                 })}
-            </div>
+            
         </div>
     )
 }
