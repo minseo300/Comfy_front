@@ -23,16 +23,16 @@ export function CreateSurvey(props){  //createSurvey/a@gmail.com
         const memberid=localStorage.getItem('memberId');
 
         CreateSurveyService.loadSurvey(loc,memberid).then(response=>{ //editSurvey/1
-            if(response.data.result.status!=="notfinish"){
+            console.log(response)
+            if(response.data.result.status!=="notFinish"){
                 navigate('/surveyshared')
             }
             else{
-        dispatch({
+                dispatch({
                     type:"loadfromserver",
                     value:response.data.result
-      })
-    }
-            
+                })
+            }
         });
     }
     const [display,setDisplay] = useState(false)
@@ -119,6 +119,7 @@ function Share_modal() {
 
     const [Id, setId] = useState();
     const [share, setShare] = useState(false);
+    const [copy, setCopy] = useState(false);
     function share_url(){
         const memberid=localStorage.getItem('memberId');
         //editSurvey/1/a@gmail.com //createSurvey/a@gmail.com
@@ -130,14 +131,14 @@ function Share_modal() {
                 setShare(true)
                 const surveyId=response.data.result;
                 postSurveyThumbnail(surveyId);
-    }
+            }
             else{
                 console.log(response.data)
             }
         })
     }
 
-        return (
+    return (
         <Transition appear show={isOpen} as={Fragment}>
             <Dialog as="div" className="relative z-10" onClose={()=>{return true}}>
                 <Transition.Child
@@ -185,24 +186,27 @@ function Share_modal() {
                                                             if(end){
                                                                 close()
                                                             }
-                        }}
+                                                        }}
                                                         startDate={startDate}
-                        endDate={endDate}
-                        dateFormat="YYYY-MM-DD"
-                        selectsRange
-                        inline
+                                                        endDate={endDate}
+                                                        dateFormat="YYYY-MM-DD"
+                                                        selectsRange
+                                                        inline
                                                         shouldCloseOnSelect={endDate}
                                                         minDate={new Date()}
-                        placeholderText="기한을 설정해주세요"
-                    />
+                                                        placeholderText="기한을 설정해주세요"
+                                                    />
                                                 )}
                                             </Popover.Panel>
                                         }
                                         </Popover>
                                     <p>설문 시작 : {dateFns.format(startDate, "yyyy-MM-dd")}</p>
                                     <p>설문 종료 : {dateFns.format(endDate ? endDate : startDate, "yyyy-MM-dd")}</p>
-                                    {Id && <p className={style.only_ani}>설문 공유 : {CreateSurveyService.shareSurvey(Id)}</p>}
-            </div>
+                                    <div className="flex flex-row">
+                                        {Id && <p className={style.only_ani}>설문 공유 : {CreateSurveyService.shareSurvey(Id)}</p>}
+                                        {copy && <p className={style.only_ani}>&nbsp;{`<`}&nbsp;복사 완료!</p>}
+                                    </div>
+                                </div>
             
                                 <div className="mt-4">
                                     <button
@@ -215,7 +219,7 @@ function Share_modal() {
                                             })
                                             if(share){
                                                 navigate('/')
-    }
+                                            }
                                         }}
                                     >
                                         닫기
@@ -230,15 +234,16 @@ function Share_modal() {
                                         </button>
                                     }
                                     {
-                                        share && <div className={style.only_ani}>
-                                            <button
-                                                type="button"
-                                                className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 ml-2 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                                                onClick={()=>{navigator.clipboard.writeText(CreateSurveyService.shareSurvey(Id));}}
-                                            >
-                                                복사
-                                            </button>
-                                        </div>
+                                        share && <button
+                                            type="button"
+                                            className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 ml-2 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                                            onClick={()=>{
+                                                navigator.clipboard.writeText(CreateSurveyService.shareSurvey(Id));
+                                                setCopy(true)
+                                            }}
+                                        >
+                                            복사
+                                        </button>
                                     }
                                 </div>
                             </Dialog.Panel>
@@ -268,18 +273,18 @@ function CreateSurveySend() {
                     setDisabled(true)
                     CreateSurveyService.saveSurvey(loc,memberid,state).then(response=>{
                         if(response.data.isSuccess || response.data.isSuccess===undefined){
-                    if(!serverload){
-                            console.log('response',response);
-                            console.log('response data',response.data);
-                            const surveyId=response.data.result;
-                            console.log('after post survey: surveyId - ',surveyId);
-                            postSurveyThumbnail(surveyId);
+                            if(!serverload){
+                                console.log('response',response);
+                                console.log('response data',response.data);
+                                const surveyId=response.data.result;
+                                console.log('after post survey: surveyId - ',surveyId);
+                                postSurveyThumbnail(surveyId);
                             }
-                            navigate(`/manage`)
-                    }
-                    else{
+                            navigate(`/temporary`)
+                        }
+                        else{
                             setDisabled(false)
-                    }
+                        }
                     })
                 }}
                 disabled={disabled}

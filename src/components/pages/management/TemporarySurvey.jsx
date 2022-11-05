@@ -50,7 +50,7 @@ function showDeleteModal(surveyId) {
 
   function editSurvey(surveyId) {
     closeModal();
-    navigate(`/createSurvey/${surveyId}`);
+    navigate(`/survey/${surveyId}`);
   }
 
   useEffect(() => {

@@ -28,7 +28,7 @@ const solutions = [
     {
         name: '기본 설문지 제작',
         description: '기본 템플릿으로 설문을 제작합니다.',
-        href: '/createsurvey',
+        href: '/survey',
         icon: CursorArrowRaysIcon,
     },
     {
@@ -122,8 +122,8 @@ function Header() {
     return (
         <Popover className="relative bg-white">
             <div className="mx-auto max-w-7xl px-4 sm:px-6">
-                {logoutAlert&&<div class="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3" role="alert">
-                    <p class="font-bold text-center">Comfy의 편안한 설문 시스템을 사용하고 싶으시면 로그인해주세요!</p>
+                {logoutAlert&&<div className="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3" role="alert">
+                    <p className="font-bold text-center">Comfy의 편안한 설문 시스템을 사용하고 싶으시면 로그인해주세요!</p>
                 </div>}
                 <div className="flex items-center justify-between border-b-2 border-gray-100 py-3 md:justify-start md:space-x-10 ">
                     

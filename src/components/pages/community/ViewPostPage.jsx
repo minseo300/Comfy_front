@@ -108,6 +108,7 @@ function ViewPostPage(props){
                                                         // setSuccessCreatingSurvey(true);
                                                         setSuccessCreatingSurvey(true);
                                                         console.log('successCreatingSurvey',successCreatingSurvey);
+                                                        console.log(response)
                                                         postSurveyThumbnail(response.data.result.surveyId);
                                                         setTimeout(function() {
                                                             setSuccessCreatingSurvey(false);
