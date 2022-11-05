@@ -9,11 +9,11 @@ import SelectSurveyPage from './components/pages/community/SelectSurveyPage';
 // import StoreSurveyPage from './components/pages/management/StoreSurveyPage';
 import NotFound from './components/common/NotFound';
 import Home from './components/pages/home/Home';
-import CreateSurveyPage from './components/pages/CreateSurveyPage';
+import CreateSurveyPage from './components/pages/create/CreateSurvey';
 import TemporarySurvey from './components/pages/management/TemporarySurvey';
 import ResultSurvey from './components/pages/result/ResultSurvey';
 
-import RespondentSurveyPage, { RespondentComplete } from './components/pages/RespondentSurveyPage';
+import RespondentSurvey, { RespondentClose, RespondentComplete, RespondentNotOpen } from './components/pages/create/RespondentSurvey';
 
 
 
@@ -40,8 +40,8 @@ function App() {
         <BrowserRouter>
             
                 <Routes>
-                      <Route path="respondentSurvey/:surveyId" element={<RespondentSurveyPage />} />
-                      <Route path="answerSurvey/:surveyId/:submitId" element={<RespondentSurveyPage mode={3}/>} />
+                      <Route path="respondent/:surveyId" element={<RespondentSurvey mode={2}/>} />
+                      <Route path="answersurvey/:surveyId/:submitId" element={<RespondentSurvey mode={3}/>} />
                       <Route path="respondentComplete" element={<RespondentComplete />} />
                       <Route path="/" element={<Home />} />
                       <Route path="community" element={<MainPage />} />

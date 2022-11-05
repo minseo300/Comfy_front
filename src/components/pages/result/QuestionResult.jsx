@@ -19,10 +19,7 @@ function QuestionResult() {
         SurveyService.getSurveyQuestion(surveyId).then((res) => {
           dispatch(getQuestion(res.data.result));
         })
-      } else {
-        console.log("질문 데이터가 이미 있습니다.");
-        return;
-      }
+      } 
     }
   }, [])
 

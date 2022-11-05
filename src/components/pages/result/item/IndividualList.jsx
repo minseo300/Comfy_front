@@ -14,6 +14,7 @@ const IndividualList = (props) => {
             {answers.map((answer)=>{
                 return(
                     <IndividualListItem
+                        key = {answer.id}
                         answer = {answer}
                         onClick={()=>{
                             onClickItem(answer);

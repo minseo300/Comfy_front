@@ -1,12 +1,12 @@
 import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import IndividualList from './item/IndividualList';
-import { useSelector,useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const IndividualShow = () => {
     const navigate = useNavigate();
     const  {surveyId} = useParams();
-    const dispatch=useDispatch();
+
     const respondent = useSelector(state => state.result.respondents);
 
     for(let i=0; i<respondent.length; i++){
@@ -18,12 +18,8 @@ const IndividualShow = () => {
             {respondent && <IndividualList
                 answers={respondent}
                 onClickItem={(item) => {
-                    dispatch({
-                        type:"reset_template"
-                      })
                     navigate(`/answerSurvey/${surveyId}/${item.id}`);
-                }} 
-                />}
+                }} />}
         </div>
     )
 }

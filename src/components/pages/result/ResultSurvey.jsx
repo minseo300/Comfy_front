@@ -7,8 +7,6 @@ import { getSurveyDetails } from '../../../modules/result';
 import { getIndividual } from '../../../modules/result';
 import QuestionResult from './QuestionResult';
 import IndividualShow from './IndividualShow';
-import member, { loginMember,logoutMember } from '../../../modules/member';
-import { logout } from '../../../services/MemberService'
 // import * as Sentry from "@sentry/react";
 
 const ResultSurvey = () => {
@@ -53,18 +51,16 @@ const ResultSurvey = () => {
             <h2 className="m-2 text-xl font-weight-bold text-dark">설문 내용: {survey.contents}</h2>
           </div>
 
-          <div className="p-4 d-flex border flex-column">
+          <div className="p-4 d-flex border flex-column lg:h-96">
             <h3 className="m-2 text-2xl font-weight-bold">응답자 수</h3>
             <ResponsivePie
-              width={300}
-              height={310}
               data={[
                 {
                   id: '응답자', //필수항목 답변 개수
                   value: respondent.length
                 }
               ]}
-              margin={{ top: 20, left: 40, bottom: 50 }}
+              margin={{ top: 20,bottom: 100}}
               innerRadius={0.5}
               padAngle={1.8}
               cornerRadius={0}
@@ -94,31 +90,25 @@ const ResultSurvey = () => {
             />
           </div>
 
-          <div className="grid border items-center grid-cols-1 gap-x-6 sm:grid-cols-2 xl:gap-x-8">
+          <div className="grid border items-center grid-cols-1 gap-x-6 sm:grid-cols-1 xl:gap-x-8">
 
             <div className="p-2 d-flex flex-column ">
               <h2 className="m-2 text-2xl font-weight-bold text-dark w-100 h-100">만족도</h2>
               <h2 className="m-3 text-xl font-weight-bold text-dark w-100 h-100">
-                매우 좋음</h2>
+                {survey.satisfaction}</h2>
             </div>
 
             <div className="p-2 d-flex flex-column ">
               <h2 className="m-2 text-2xl font-weight-bold text-dark w-100 h-100">마감일</h2>
               <h2 className="m-3 text-xl font-weight-bold text-dark w-100 h-100">
-                10월 30일</h2>
+                {survey.end}</h2>
             </div>
 
 
             <div className="p-2 d-flex flex-column ">
               <h2 className="m-2 text-2xl font-weight-bold text-dark w-100 h-100">설문 상태</h2>
               <h2 className="m-3 text-xl font-weight-bold text-dark w-100 h-100">
-                설문 완료</h2>
-            </div>
-
-            <div className="p-2 d-flex flex-column">
-              <h2 className="m-2 text-2xl font-weight-bold text-dark w-100 h-100">결론</h2>
-              <h2 className="m-3 text-xl font-weight-bold text-dark w-100 h-100">
-                탕수육</h2>
+                {survey.type}</h2>
             </div>
 
           </div>

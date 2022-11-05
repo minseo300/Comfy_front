@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
-import styled from 'styled-components';
 import QuestionListItem from './QuestionListItem';
 
 
@@ -35,6 +34,7 @@ const QuestionList = (props) => {
                 {questions && questions.map((question) => {
                     return (
                         <QuestionListItem
+                            key = {question.id}
                             questions={question}
                             value={value}
                         />
