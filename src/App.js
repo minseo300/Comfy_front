@@ -28,6 +28,7 @@ import {
   Routes,
   Route
 } from "react-router-dom";
+import CreateSurveyTemplates from './components/pages/create/CreateSurveyTemplates';
 
 export const spring_domain="http://localhost:8080"//http://172.16.1.151:8080 // localhost:8080
 export const react_domain="http://localhost:3000"//http://172.16.3.121 // localhost:3000
@@ -57,10 +58,10 @@ function App() {
                       <Route path="temporary" element={<TemporarySurvey />}/>
                       <Route path="survey" element={<CreateSurvey />} />
                       <Route path="survey/:surveyId" element={<CreateSurvey load={"yes"}/>} />
+                      <Route path="survey" element={<CreateSurvey />} />
+                      <Route path="comfysurvey" element={<CreateSurveyTemplates />} />
                       <Route path="surveyshared" element={<SurveyShared />} />
                       <Route path="/resultSurvey/:surveyId" element={<ResultSurvey />}/>
-                      <Route path="/createsurvey" element={<CreateSurvey/>} />
-                      <Route path="/createsurvey/:surveyId" element={<CreateSurvey load={"yes"}/>}/>
                       <Route path="/manage/survey/:surveyId" element={<RespondentSurvey mode={0}/>} />
                       {/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}
                       <Route path="*" element={<NotFound />}></Route>
