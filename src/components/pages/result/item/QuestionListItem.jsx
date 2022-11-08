@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import { ResponsivePie } from '@nivo/pie'
 import { ResponsiveBar } from '@nivo/bar'
-
+import axios from 'axios';
 import SurveyService from '../../../../services/ResultService';
 
 function QuestionListItem(props) {
@@ -10,12 +10,12 @@ function QuestionListItem(props) {
     const value = props.value;
     const type = question.question.type;
     const { surveyId } = useParams();
-
+    const [data, setData]=useState();
     const [options,setOption] = useState([]);
     const [gridOptions, setGridOption] = useState([]);
     const answer_count = question.answer.length;
     const answer_options = [];
-
+    var essay=[];
     useEffect(() => {
         if (type === "객관식_단일" || type ==="객관식_중복") {
             SurveyService.getQuestionOption(surveyId, question.question.id).then((res) => {
@@ -27,6 +27,17 @@ function QuestionListItem(props) {
             })
             SurveyService.getGridOption(surveyId, question.question.id).then((res) => {
                 setGridOption(res.data.result);
+            })
+        } else if (type=== "주관식"){
+            for (var i = 0; i < answer_count; i++) {            
+                // array.push(<div className='mb-2 text-xl'>{question.answer[i].essay.contents}</div>)
+                essay.push(question.answer[i].essay.contents)
+            }
+            axios.post('http://210.109.62.25:5000/react_to_flask',{
+            essay
+            }).then(function(response){
+                console.log(response.data)
+                setData(response.data)
             })
         }
     }, [question])
@@ -204,10 +215,7 @@ function QuestionListItem(props) {
             return array;
         }
         else { // 주관식
-            for (var i = 0; i < answer_count; i++) {
-                array.push(<div className='mb-2 text-xl'>{question.answer[i].essay.contents}</div>)
-            }
-            return array;
+            return data;
         }
     }
 
