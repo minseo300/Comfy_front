@@ -14,7 +14,7 @@ export async function getPosts(){
     const memberId=localStorage.getItem('memberId');
     // if(localStorage.getItem('memberId')==='null') memberId=0;
     // else memberId=localStorage.getItem('memberId');
-    const response=await axios.get(`http://localhost:8080/community/${memberId}`);
+    const response=await axios.get(`http://210.109.62.25:8080/community/${memberId}`);
     console.log('getPosts response: ',response);
     return response.data.result;
 }
@@ -24,12 +24,15 @@ export async function getMyPagePosts(){
     
     const memberId=localStorage.getItem('memberId');
 
-    const response=await axios.get(`http://localhost:8080/myPage/${memberId}`,{headers:config});
+    const response=await axios.get(`http://210.109.62.25:8080/myPage/${memberId}`,{headers:config});
     console.log('getMyPagePosts response: ',response);
     if(response.data.code===2002){
         return 100;
     }
-    else renew_accessToken(response.config.headers.ACCESS_TOKEN);
+    else {
+        console.log("[reissued access token]: ",response.config.headers.ACCESS_TOKEN);
+        renew_accessToken(response.config.headers.ACCESS_TOKEN);
+    }
 
     return response.data.result;
 }
@@ -38,7 +41,7 @@ export async function getMyPagePosts(){
 export async function deleteMyPost(postId){
     const memberId=localStorage.getItem('memberId');
 
-    const response=await axios.delete(`http://localhost:8080/post/${postId}/${memberId}`,{headers:config});
+    const response=await axios.delete(`http://210.109.62.25:8080/post/${postId}/${memberId}`,{headers:config});
     console.log('deleteMyPost response: ',response);
     if(response.data.code===2002){
         return 100;
@@ -58,7 +61,7 @@ export async function addBookmark(postId){
         memberId:localStorage.getItem('memberId'),
         postId:postId
     };
-    const response=await axios.post('http://localhost:8080/bookmark',data,{headers:config});
+    const response=await axios.post('http://210.109.62.25:8080/bookmark',data,{headers:config});
     //const response=await axios.post(`http://210.109.62.25:8080/bookmark/${postId}/${memberId}`,{headers:config});
     console.log('[ADD BOOKMARK] response',response);
     if(response.data.code===2002){
@@ -80,7 +83,7 @@ export async function deleteBookmark(postId){
         memberId:localStorage.getItem('memberId'),
         postId:postId
     };
-    const response=await axios.delete(`http://localhost:8080/bookmark/${postId}/${memberId}`,{headers:config},{});
+    const response=await axios.delete(`http://210.109.62.25:8080/bookmark/${postId}/${memberId}`,{headers:config},{});
     //const response=await axios.delete(`http://210.109.62.25:8080/bookmark/${postId}/${memberId}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
     if(response.data.code===2002){
         return 100;
@@ -96,7 +99,7 @@ export async function getPostInfo(postId){
 
     console.log('getPostInfo - postId',postId);
 
-    const response=await axios.get(`http://localhost:8080/post/${postId}/${memberId}`,{headers:config});
+    const response=await axios.get(`http://210.109.62.25:8080/post/${postId}/${memberId}`,{headers:config});
 
     return response.data.result;
 }
@@ -104,7 +107,7 @@ export async function getPostInfo(postId){
 // 게시글 등록
 export async function createPost(title,content,surveyId){
     const response=await axios.post(
-        "http://localhost:8080/posting",{
+        "http://210.109.62.25:8080/posting",{
             title:title,
             contents:content,
             memberId:localStorage.getItem('memberId'),
@@ -122,7 +125,7 @@ export async function createPost(title,content,surveyId){
 // 게시글 검색
 export async function getSearchedPosts(word){
     const response = await axios.get(
-        "http://localhost:8080/search?word=" + word,{
+        "http://210.109.62.25:8080/search?word=" + word,{
           params:{
               title:word
           }
@@ -132,5 +135,3 @@ export async function getSearchedPosts(word){
     console.log('getSearchedPosts response',response);
     return response.data.result;
 }
-
-

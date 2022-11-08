@@ -12,25 +12,25 @@ function add_ques(props){
 function init_survey(){
     return {
         "serverload":false,
-        "endtime":"",
-        "starttime":"",
+        "end":"",
+        "start":"",
         "share_modal":false,
         "ques_list":[],
         "ans_list":[],
         "choice_list":[],
-        "satis":0,
+        "satis":"",
         "intro0":"",
         "intro1":"",
     }
 }
 
 function Gen_id(state){
-    if(state.length!==0){
-        var id=state[state.length-1].id+1
-    }
-    else{
-        var id=0
-    }
+    var id=0
+    state.map(st=>{
+        if(st.id>=id){
+            id=st.id+1
+        }
+    })
     return id
 }
 
@@ -40,48 +40,40 @@ export default function createsurvey(state=init_survey(), action){
         case "change_list":
             switch(action.list_type){
                 case "ques":
-                    var dest_index=state.ques_list.findIndex(t=>t.id===action.dest_id)
-                    var source_index=state.ques_list.findIndex(t=>t.id===action.source_id)
-                    state.ques_list[dest_index]=action.source
-                    state.ques_list[source_index]=action.dest
-                    state.ques_list[dest_index].id=action.dest_id
-                    state.ques_list[source_index].id=action.source_id
-                    if(state.ans_list){
-                        state.ans_list.map(ans=>{
-                            if(ans.rootid===action.source_id){
-                                ans.rootid=action.dest_id
-                            }
-                            else if(ans.rootid===action.dest_id){
-                                ans.rootid=action.source_id
-                            }
-                        })
+                    var dest_id=action.dest.id
+                    var source_id=action.source.id
+                    state.ques_list=state.ques_list.filter(t=>t.id!==source_id)
+                    var dest_index=state.ques_list.findIndex(t=>t.id===dest_id)
+                    if(action.source_index>action.dest_index){
+                        state.ques_list.splice(dest_index,0,action.source)
                     }
-                    if(state.choice_list){
-                        state.choice_list.map(cho=>{
-                            if(cho.rootid===action.source_id){
-                                cho.rootid=action.dest_id
-                            }
-                            else if(cho.rootid===action.dest_id){
-                                cho.rootid=action.source_id
-                            }
-                        })
+                    else{
+                        state.ques_list.splice(dest_index+1,0,action.source)
                     }
                     break
                 case "ans":
-                    var dest_index=state.ans_list.findIndex(t=>t.id===action.dest_id)
-                    var source_index=state.ans_list.findIndex(t=>t.id===action.source_id)
-                    state.ans_list[dest_index]=action.source
-                    state.ans_list[source_index]=action.dest
-                    state.ans_list[dest_index].id=action.dest_id
-                    state.ans_list[source_index].id=action.source_id
+                    var dest_id=action.dest.id
+                    var source_id=action.source.id
+                    state.ans_list=state.ans_list.filter(t=>t.id!==source_id)
+                    var dest_index=state.ans_list.findIndex(t=>t.id===dest_id)
+                    if(action.source_index>action.dest_index){
+                        state.ans_list.splice(dest_index,0,action.source)
+                    }
+                    else{
+                        state.ans_list.splice(dest_index+1,0,action.source)
+                    }
                     break
                 case "cho":
-                    var dest_index=state.choice_list.findIndex(t=>t.id===action.dest_id)
-                    var source_index=state.choice_list.findIndex(t=>t.id===action.source_id)
-                    state.choice_list[dest_index]=action.source
-                    state.choice_list[source_index]=action.dest
-                    state.choice_list[dest_index].id=action.dest_id
-                    state.choice_list[source_index].id=action.source_id
+                    var dest_id=action.dest.id
+                    var source_id=action.source.id
+                    state.choice_list=state.choice_list.filter(t=>t.id!==source_id)
+                    var dest_index=state.choice_list.findIndex(t=>t.id===dest_id)
+                    if(action.source_index>action.dest_index){
+                        state.choice_list.splice(dest_index,0,action.source)
+                    }
+                    else{
+                        state.choice_list.splice(dest_index+1,0,action.source)
+                    }
                     break
             }
             break
@@ -91,13 +83,8 @@ export default function createsurvey(state=init_survey(), action){
             state={
                 ...state,
                 "serverload":true,
-                "endtime":"",
-                "starttime":"",
                 "share_modal":false,
             }
-            break
-        case "endtime": //제작자 마감기한 설정
-            state["endtime"]=action.value
             break
         case "edit_satis": //피설문자 만족도 입력
             state["satis"]=action.value
@@ -109,7 +96,7 @@ export default function createsurvey(state=init_survey(), action){
             else{
                 var rootid=action.ansid
             }
-            if(state["ques_list"].filter(t=>t.id===action.rootid)[0]["type"]["choice_type"]===0){
+            if(state["ques_list"].filter(t=>t.id===action.rootid)[0]["type"]["choice_type"]===false){
                 if(state["ques_list"].filter(t=>t.id===action.rootid)[0]["type"]["choice_value"].filter(t=>t.rootid===rootid).length===0){
                     var cho_id=Gen_id(state["ques_list"].filter(t=>t.id===action.rootid)[0]["type"]["choice_value"])
                     state["ques_list"].filter(t=>t.id===action.rootid)[0]["type"]["choice_value"]=state["ques_list"].filter(t=>t.id===action.rootid)[0]["type"]["choice_value"].concat(Ans_data_list({selectid:action.value, rootid:rootid, id:cho_id})[1])
@@ -165,27 +152,8 @@ export default function createsurvey(state=init_survey(), action){
             break
         case "change_ques_type": //제작자 질문유형 변경
             state["ques_list"].filter(t=>t.id===action.rootid)[0]["type"]=Ques_data_list()[action.temid]
-
             state["ans_list"]=state["ans_list"].filter(t=>t.rootid!==action.rootid)
             state["choice_list"]=state["choice_list"].filter(t=>t.rootid!==action.rootid)
-            switch(action.temid){
-                case 1:
-                case 2:
-                    var ans_id=Gen_id(state["ans_list"])
-                    state["ans_list"]=state["ans_list"].concat(Ans_data_list({id:ans_id, rootid:action.rootid})[0])
-                    if(action.temid===2){
-                        var cho_id=Gen_id(state["choice_list"])
-                        state["choice_list"]=state["choice_list"].concat(Ans_data_list({id:cho_id, ansid:action.ansid, rootid:action.rootid})[1])
-                    }
-                    break
-                case 3:
-                case 4:
-                    break
-                case 5:
-                    //var ans_id=Gen_id(state["ans_list"])
-                    //state["ans_list"]=state["ans_list"].concat(Ans_data_list({id:ans_id, rootid:action.rootid})[2])
-                    break
-            }
             break
         case "del_ques": //제작자 질문 삭제
             state["ques_list"]=state["ques_list"].filter(t=>t.id!==action.id)
@@ -205,8 +173,8 @@ export default function createsurvey(state=init_survey(), action){
         case "share_modal":
         case "intro0":
         case "intro1":
-        case "endtime":
-        case "starttime":
+        case "end":
+        case "start":
             state[action.type]=action.value
     }
     result = {

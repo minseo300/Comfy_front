@@ -2,6 +2,7 @@
   "name": "comfy",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@craco/craco": "^5.9.0",
     "@headlessui/react": "^1.7.3",
@@ -38,7 +39,7 @@
     "test": "craco test",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:8080",
+  "proxy": "http://210.109.62.25:8080",
   "eslintConfig": {
     "extends": [
       "react-app",

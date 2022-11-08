@@ -43,6 +43,7 @@ export function initialize(){
 
 // reset accessToken by refreshToken
 export function renew_accessToken(accessToken){
+    console.log('renew accessToken',accessToken);
     localStorage.setItem('accessToken',accessToken);
 }
 

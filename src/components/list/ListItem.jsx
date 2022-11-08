@@ -201,11 +201,11 @@ function ListItem(props) {
                 <div>
                     <div className="flex flex-col">
                         <div className='flex flex-row items-center justify-between'>
-                            <h3 className="mt-4 text-2xl pl-3 text-gray-900 md:w-full">
+                            <h3 className="mt-4 text-2xl pl-3 text-gray-900 md:w-full md:mt-10">
                                 {item.title}
                             </h3>
-                            {selectSurvey&&<h4 className="mt-7 text-light opacity-0 hover:opacity-100 text-rose-900 md:w-8/12">
-                                피설문자 만족도: {item.satisfaction}</h4>}
+                            {/* {selectSurvey&&<h4 className="mt-7 text-light opacity-0 hover:opacity-100 text-rose-900 md:w-8/12">
+                                피설문자 만족도: {item.satisfaction}</h4>} */}
                         </div>
                         {itemCase&&!selectSurvey&&<p className="mt-1 text-sm pl-3 text-gray-700">작성자: {item.authorName}</p>}
                     </div>

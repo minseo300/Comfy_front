@@ -5,11 +5,14 @@ import { Dialog, Menu, Transition } from '@headlessui/react'
 import ManageService from '../../../../services/ManageService';
 import { deleteSurvey, updateSurveyStatus } from "../../../../services/SurveyService";
 import { useNavigate } from 'react-router-dom';
-import { ChevronDownIcon, ForwardIcon, TrashIcon } from '@heroicons/react/20/solid'
+import { ChevronDownIcon, ForwardIcon, TrashIcon,ClipboardDocumentIcon } from '@heroicons/react/20/solid'
+import { useSelector,useDispatch } from 'react-redux';
+import member, { loginMember,logoutMember, renew_accessToken } from '../../../../modules/member';
 
 function SurveyingItem() {
 
     const [surveyingList, setSurveyingList] = useState([]);
+    const [surveyingListStatus,setSurveyingListStatus]=useState(false);
     let [isOpen, setIsOpen] = useState(false);
     let [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [selectSurveyId, setSelectSurveyId] = useState()
@@ -42,17 +45,34 @@ function SurveyingItem() {
     }
 
     const navigate = useNavigate();
+    const Dispatch = useDispatch();
+
 
     // 설문 중인 설문지 받아오기 
     useEffect(() => {
         getSurveyingList().then(res => {
-            setSurveyingList(res.data.result)
+            if(res===100){
+                alert("Comfy를 사용하고 싶으시면 로그인해주세요!");
+                Dispatch(logoutMember());
+                navigate('/community');
+                setSurveyingListStatus(false);
+            }
+            else{
+                setSurveyingList(res.data.result)
+                setSurveyingListStatus(true);
+            }
+
         });
     }, [])
 
     async function getSurveyingList() {
         try {
             const result = await ManageService.getSurveyByStatus('surveying');
+            if(result.data.code===2002){
+                return 100;
+            }
+            else renew_accessToken(result.config.headers.ACCESS_TOKEN);
+
             return result;
         } catch (error) {
             console.log(error);
@@ -101,7 +121,7 @@ function SurveyingItem() {
                 <h2 className="text-2xl font-bold tracking-tight text-gray-900"> 설문 진행 중인 설문지</h2>
                 {surveyingList.length !== 0 ?
                     <div className="mt-6 grid grid-cols-1 gap-y-4 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-                        {surveyingList.map((survey) => (
+                        {surveyingListStatus?surveyingList.map((survey) => (
                             <div key={survey.surveyId} className="group relative">
                                 <div className="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-70">
                                     <img
@@ -165,6 +185,33 @@ function SurveyingItem() {
                                                         <Menu.Item>
                                                             {({ active }) => (
                                                                 <button
+                                                                    className={`${active ? 'bg-violet-500 text-white' : 'text-gray-900'
+                                                                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                                                    onClick={() => {
+                                                                        Dispatch({
+                                                                            type:"reset_template"
+                                                                        })
+                                                                        navigate(`/manage/survey/${survey.surveyId}`)
+                                                                    }}
+                                                                >
+                                                                    {active ? (
+                                                                        <ClipboardDocumentIcon
+                                                                            className="mr-2 h-5 w-5"
+                                                                            aria-hidden="true"
+                                                                        />
+                                                                    ) : (
+                                                                        <ClipboardDocumentIcon
+                                                                            className="mr-2 h-5 w-5"
+                                                                            aria-hidden="true"
+                                                                        />
+                                                                    )}
+                                                                    설문지 보기
+                                                                </button>
+                                                            )}
+                                                        </Menu.Item>
+                                                        <Menu.Item>
+                                                            {({ active }) => (
+                                                                <button
                                                                     onClick={() => showDeleteModal(survey.surveyId)}
                                                                     className={`${active ? 'bg-violet-500 text-white' : 'text-gray-900'
                                                                         } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
@@ -193,11 +240,11 @@ function SurveyingItem() {
                                     </div>
                                 </div>
                             </div>
-                        ))}
+                        )):<></>}
                     </div>
                     :
                     <div className="h-96 flex justify-center items-center text-2xl text-bold text-sky-400"> 설문 진행 중인 설문지가 없습니다! </div>
-
+                                                                    
                 }
 
                 {/* 설문 끝내기 */}

@@ -30,7 +30,7 @@ function QuestionListItem(props) {
             })
         }
     }, [question])
-
+    
 
     const answer = () => {
         var array = [];
@@ -39,7 +39,6 @@ function QuestionListItem(props) {
             for (let i = 0; i < options.length; i++) {
                 answer_options.push({ id: options[i].contents, value: 0 })
             }
-
             for (let i = 0; i < answer_count; i++) {
                 for (let j = 0; j < options.length; j++) {
                     if (question.answer[i].option.id === options[j].id) {
@@ -138,17 +137,6 @@ function QuestionListItem(props) {
                     padding={0.3}
                     valueScale={{ type: 'linear' }}
                     indexScale={{ type: 'band', round: true }}
-                    colors={{ scheme: 'nivo' }}
-
-                    borderColor={{
-                        from: 'color',
-                        modifiers: [
-                            [
-                                'darker',
-                                1.6
-                            ]
-                        ]
-                    }}
                     axisTop={null}
                     axisRight={null}
                     axisBottom={{
@@ -169,15 +157,6 @@ function QuestionListItem(props) {
                     }}
                     labelSkipWidth={12}
                     labelSkipHeight={12}
-                    labelTextColor={{
-                        from: 'color',
-                        modifiers: [
-                            [
-                                'darker',
-                                1.6
-                            ]
-                        ]
-                    }}
                     legends={[
                         {
                             dataFrom: 'keys',
@@ -214,9 +193,17 @@ function QuestionListItem(props) {
             for (var i = 0; i < answer_count; i++) {
                 sum = sum + question.answer[i].satisfaction.percent;
             }
-            array.push(<div className='mb-2 text-xl'>{sum / answer_count}</div>)
+            array.push(<div className='mb-2 text-xl'>{parseFloat(sum / answer_count).toFixed(0)}</div>)
             return array;
-        } else { // 주관식
+        } else if (type === "슬라이더") {
+            let sum = 0;
+            for (var i = 0; i < answer_count; i++) {
+                sum = sum + question.answer[i].slider.value;
+            }
+            array.push(<div className='mb-2 text-xl'>{parseFloat(sum / answer_count).toFixed(2)}</div>)
+            return array;
+        }
+        else { // 주관식
             for (var i = 0; i < answer_count; i++) {
                 array.push(<div className='mb-2 text-xl'>{question.answer[i].essay.contents}</div>)
             }

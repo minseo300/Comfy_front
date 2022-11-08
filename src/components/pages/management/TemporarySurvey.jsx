@@ -14,6 +14,7 @@ function TemporarySurvey() {
 
   const navigate = useNavigate()
   const [surveyList, setSurveyList] = useState([])
+  const [surveyListStatus,setSurveyListStatus]=useState(false);
   const [selectSurveyId, setSelectSurveyId] = useState()
   let [isOpen, setIsOpen] = useState(false)
   let [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -53,15 +54,23 @@ function showDeleteModal(surveyId) {
     navigate(`/survey/${surveyId}`);
   }
 
+  var resultCode=1000;
   useEffect(() => {
     ManageService.getSurveyByStatus('notFinish').then((res) => {
+      console.log('TemporarySurvey: res',res);
       if (res.data.code === 2002) {
-        logout();
-        Dispatch(logoutMember());
+          console.log('로그인 만료');
+          setSurveyListStatus(false);
+          alert("Comfy를 사용하고 싶으시면 로그인해주세요!");
+          Dispatch(logoutMember());
+          navigate('/community');
+          resultCode=2002;
       }
       else {
         setSurveyList(res.data.result);
+        setSurveyListStatus(true);
         console.log("survey data : ", res.data.result);
+        resultCode=1000;
       }
 
     })
@@ -91,7 +100,7 @@ async function deleteSelectSurvey(surveyId) {
       <div className="bg-white">
         <div className="mx-auto max-w-2xl py-16 px-4 sm:py-6 sm:px-6 lg:max-w-7xl lg:px-8">
           <h2 className="text-2xl font-bold tracking-tight text-gray-900"> 임시 저장 된 설문지</h2>
-          <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+          {surveyListStatus&&<div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             {surveyList.map((survey) => (
               <div key={survey.surveyId} className="group relative">
                 <div className="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-70">
@@ -184,7 +193,7 @@ async function deleteSelectSurvey(surveyId) {
                 </div>
               </div>
             ))}
-          </div>
+          </div>}
         </div>
 
         {/* 설문 수정하기 */}

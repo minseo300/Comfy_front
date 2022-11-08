@@ -30,6 +30,7 @@ export function Multi(props){
                 </div>
             }
             <div className={style.column_container}>
+                <p className={style.text}>문항 목록</p>
                 <ItemList
                     rootid={data.rootid}
                     mode={data.mode}
@@ -47,6 +48,7 @@ export function Multi(props){
             </div>
             {
                 props.type==="grid" && data.mode===1 && <div className={style.column_container}>
+                    <p className={style.text}>선택지 목록</p>
                     <ItemList
                         rootid={data.rootid}
                         mode={data.mode}
@@ -132,12 +134,7 @@ export function SurveySlider(props){
         type="edit_writing"
         var ans=Getans(data.id)
     }
-    if(data.mode===3){
-        var slider_style=style.text
-    }
-    else{
-        var slider_style=style.slider_text
-    }
+    var slider_style=style.slider_text
 
     return <div className={style.row_container}>
         {
@@ -151,6 +148,7 @@ export function SurveySlider(props){
                 mode={data.mode}
                 type={type}
                 id={data.id}
+                max={props.type==="edit_satis"?null:5}
             />
         }
         {

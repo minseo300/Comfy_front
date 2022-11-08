@@ -65,8 +65,8 @@ export function CreateSurvey(props){  //createSurvey/a@gmail.com
                         }}
                     />
                     <p className={!display ? `text-gray-200` : `text-blue-600`}>&nbsp;미리보기</p>
-            </div>
-    }
+                </div>
+            }
             <div className={style.page}>
                 {
                     (width>=height*1.2 || !display) && <div className={style.column_body}>
@@ -83,7 +83,7 @@ export function CreateSurvey(props){  //createSurvey/a@gmail.com
                             state={queslist}
                         />
                     </div>
-}
+                }
                 {
                     width>=height*1.2 && 
                     <hr style={{ border: "1px solid #B0B0B0", width: '1', height: '100vh'}} />
@@ -123,8 +123,10 @@ function Share_modal() {
     function share_url(){
         const memberid=localStorage.getItem('memberId');
         //editSurvey/1/a@gmail.com //createSurvey/a@gmail.com
-        survey_data["endtime"]=dateFns.format(endDate ? endDate : startDate, "yyyy-MM-dd")
-        survey_data["starttime"]=dateFns.format(startDate, "yyyy-MM-dd")
+        survey_data["start"]=dateFns.format(startDate, "yyyy-MM-dd")
+        survey_data["end"]=dateFns.format(endDate ? endDate : startDate, "yyyy-MM-dd")
+        
+        console.log(survey_data)
         CreateSurveyService.saveSurvey(loc,memberid,survey_data).then(response=>{
             if(response.data.result){
                 setId(response.data.result)
@@ -218,7 +220,7 @@ function Share_modal() {
                                                 value:false
                                             })
                                             if(share){
-                                                navigate('/')
+                                                navigate('/manage')
                                             }
                                         }}
                                     >
@@ -269,7 +271,8 @@ function CreateSurveySend() {
             <CreateSurveyButton
                 title="임시저장"
                 onClick={()=>{
-                    state["endtime"]="not"
+                    console.log(state)
+                    state["end"]="not"
                     setDisabled(true)
                     CreateSurveyService.saveSurvey(loc,memberid,state).then(response=>{
                         if(response.data.isSuccess || response.data.isSuccess===undefined){
