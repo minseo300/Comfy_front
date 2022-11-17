@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { renew_accessToken,initialize } from '../modules/member';
-const MANAGESURVEY_API_BASE_URL = "http://210.109.62.25:8080";
+const MANAGESURVEY_API_BASE_URL = "http://spring-boot-docker-service";
 
 const accessToken=localStorage.getItem('accessToken');
 const memberId=localStorage.getItem('memberId');
