@@ -67,8 +67,8 @@ pipeline {
                       url: 'https://github.com/KA-SURFY/argocd.git',
                       branch: 'master'
               
-              sh "sed -i 's/restful_front:.*\$/restful_front:${currentBuild.number}/g' back-deploy/deployment.yaml"
-              sh "git add back-deploy/deployment.yaml"
+              sh "sed -i 's/restful_front:.*\$/restful_front:${currentBuild.number}/g' back-deploy/front-deployment.yaml"
+              sh "git add back-deploy/front-deployment.yaml"
               sh "git commit -m '[UPDATE] restful_front ${currentBuild.number} image versioning'"
 
               withCredentials([gitUsernamePassword(credentialsId: 'github_cred', gitToolName: 'git-tool')]) {
