@@ -4,7 +4,7 @@ import { logoutMember,initialize,renew_accessToken } from '../modules/member';
 // 구글 로그인
 export async function login(idToken){
     console.log('idToken',idToken);
-    const response=await axios.get(`http://spring-boot-docker-service:8080/login/google/${idToken}`).then((response)=>{
+    const response=await axios.get(`http://spring-boot-docker-service/login/google/${idToken}`).then((response)=>{
         console.log(response.data.result);
         if(response.data.code===2002){
             localStorage.clear();
@@ -25,7 +25,7 @@ export async function login(idToken){
 export async function logout(){
     const memberId=localStorage.getItem('memberId');
 
-    const response=axios.delete(`http://spring-boot-docker-service:8080/logout/${localStorage.getItem('memberId')}`);
+    const response=axios.delete(`http://spring-boot-docker-service/logout/${localStorage.getItem('memberId')}`);
     console.log('logout response',response);
     
     return response;
