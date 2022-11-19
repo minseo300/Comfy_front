@@ -15,7 +15,7 @@ export async function getSurveys(){
     // if(localStorage.getItem('memberId')==='null') memberId=0;
     // else memberId=localStorage.getItem('memberId');
     
-    const response= await axios.get(`http://spring-boot-docker-service:8080/surveyPage/${memberId}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
+    const response= await axios.get(`http://spring-boot-docker-service/surveyPage/${memberId}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
     console.log('geteSurveys response: ',response);
     if(response.data.code===2002){
         return 100;
@@ -29,7 +29,7 @@ export async function getSurveys(){
 export async function deleteSurvey(surveyId){
     const memberId=localStorage.getItem('memberId');
 
-    const response=await axios.delete(`http://spring-boot-docker-service:8080/deleteSurvey/${surveyId}/${memberId}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}},{});
+    const response=await axios.delete(`http://spring-boot-docker-service/deleteSurvey/${surveyId}/${memberId}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}},{});
     console.log('deleteSurvey response: ',response);
     if(response.data.code===2002){
         return 100;
@@ -43,7 +43,7 @@ export async function deleteSurvey(surveyId){
 export async function updateSurveyStatus(surveyId){
     const memberId=localStorage.getItem('memberId');
 
-    const response=await axios.patch(`http://spring-boot-docker-service:8080/survey/${surveyId}`,{},{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
+    const response=await axios.patch(`http://spring-boot-docker-service/survey/${surveyId}`,{},{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
     console.log('updateSurveyStatus response: ',response);
 
     return response.data.result;
@@ -53,7 +53,7 @@ export async function updateSurveyStatus(surveyId){
 export async function makeSurveyFromPost(surveyId){
     console.log('makeSurveyFromPost - surveyId',surveyId);
     
-    const response=await axios.post(`http://spring-boot-docker-service:8080/created-survey/${surveyId}/${localStorage.getItem('memberId')}`,{},{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
+    const response=await axios.post(`http://spring-boot-docker-service/created-survey/${surveyId}/${localStorage.getItem('memberId')}`,{},{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
         
     
     // if(response.data.code===2002){
@@ -66,7 +66,7 @@ export async function makeSurveyFromPost(surveyId){
 
 // 본인이 만든 설문지 중 설문 완료된 설문지 조회
 export async function getMyFinishedSurvey(){
-    const response=await axios.get(`http://spring-boot-docker-service:8080/selectSurvey/${localStorage.getItem('memberId')}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
+    const response=await axios.get(`http://spring-boot-docker-service/selectSurvey/${localStorage.getItem('memberId')}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
     console.log('getMyFinishedSurvey',response);
     if(response.data.code===2002){
         return 100;
@@ -79,7 +79,7 @@ export async function getMyFinishedSurvey(){
 
 // 설문지 info 조회
 export async function getSurveyInfo(surveyId){
-    const response=await axios.get(`http://spring-boot-docker-service:8080/createPost/${surveyId}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
+    const response=await axios.get(`http://spring-boot-docker-service/createPost/${surveyId}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
     console.log('getSurveyInfo',response);
     // if(response.data.code===2002){
     //     return 100;
@@ -92,5 +92,5 @@ export async function getSurveyInfo(surveyId){
 // 설문지 썸네일 저장
 export function postSurveyThumbnail(surveyId){
     const thumbNum = Math.floor(Math.random() * 5 + 1);
-    const response=axios.patch(`http://spring-boot-docker-service:8080/survey/thumbnail/${surveyId}/${thumbNum}`,{},{headers:config})
+    const response=axios.patch(`http://spring-boot-docker-service/survey/thumbnail/${surveyId}/${thumbNum}`,{},{headers:config})
 }
