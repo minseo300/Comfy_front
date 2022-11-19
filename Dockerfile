@@ -3,7 +3,7 @@ WORKDIR /app
 ENV PATH /app/node_moduels/.bin:$PATH
 
 COPY . /app/
-RUN npm install
+RUN npm install --legacy-peer-deps
 RUN npm run build
 
 FROM nginx:latest
