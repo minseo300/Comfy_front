@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { renew_accessToken } from '../modules/member';
 
-const SURVEY_API_BASE_URL = "http://10.108.24.189/result";
+const SURVEY_API_BASE_URL = "http://spring-boot-docker-service/result";
 const config={
     withCredentials:true,
     ACCESS_TOKEN:localStorage.getItem('accessToken'),

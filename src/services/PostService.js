@@ -14,7 +14,7 @@ export async function getPosts(){
     const memberId=localStorage.getItem('memberId');
     // if(localStorage.getItem('memberId')==='null') memberId=0;
     // else memberId=localStorage.getItem('memberId');
-    const response=await axios.get(`http://10.108.24.189/community/${memberId}`);
+    const response=await axios.get(`http://spring-boot-docker-service/community/${memberId}`);
     console.log('getPosts response: ',response);
     return response.data.result;
 }
@@ -24,7 +24,7 @@ export async function getMyPagePosts(){
     
     const memberId=localStorage.getItem('memberId');
 
-    const response=await axios.get(`http://10.108.24.189/myPage/${memberId}`,{headers:config});
+    const response=await axios.get(`http://spring-boot-docker-service/myPage/${memberId}`,{headers:config});
     console.log('getMyPagePosts response: ',response);
     if(response.data.code===2002){
         return 100;
@@ -41,7 +41,7 @@ export async function getMyPagePosts(){
 export async function deleteMyPost(postId){
     const memberId=localStorage.getItem('memberId');
 
-    const response=await axios.delete(`http://10.108.24.189/post/${postId}/${memberId}`,{headers:config});
+    const response=await axios.delete(`http://spring-boot-docker-service/post/${postId}/${memberId}`,{headers:config});
     console.log('deleteMyPost response: ',response);
     if(response.data.code===2002){
         return 100;
@@ -61,7 +61,7 @@ export async function addBookmark(postId){
         memberId:localStorage.getItem('memberId'),
         postId:postId
     };
-    const response=await axios.post('http://10.108.24.189/bookmark',data,{headers:config});
+    const response=await axios.post('http://spring-boot-docker-service/bookmark',data,{headers:config});
     //const response=await axios.post(`http://210.109.62.25:8080/bookmark/${postId}/${memberId}`,{headers:config});
     console.log('[ADD BOOKMARK] response',response);
     if(response.data.code===2002){
@@ -83,7 +83,7 @@ export async function deleteBookmark(postId){
         memberId:localStorage.getItem('memberId'),
         postId:postId
     };
-    const response=await axios.delete(`http://10.108.24.189/bookmark/${postId}/${memberId}`,{headers:config},{});
+    const response=await axios.delete(`http://spring-boot-docker-service/bookmark/${postId}/${memberId}`,{headers:config},{});
     //const response=await axios.delete(`http://210.109.62.25:8080/bookmark/${postId}/${memberId}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
     if(response.data.code===2002){
         return 100;
@@ -99,7 +99,7 @@ export async function getPostInfo(postId){
 
     console.log('getPostInfo - postId',postId);
 
-    const response=await axios.get(`http://10.108.24.189/post/${postId}/${memberId}`,{headers:config});
+    const response=await axios.get(`http://spring-boot-docker-service/post/${postId}/${memberId}`,{headers:config});
 
     return response.data.result;
 }
@@ -107,7 +107,7 @@ export async function getPostInfo(postId){
 // 게시글 등록
 export async function createPost(title,content,surveyId){
     const response=await axios.post(
-        "http://10.108.24.189/posting",{
+        "http://spring-boot-docker-service/posting",{
             title:title,
             contents:content,
             memberId:localStorage.getItem('memberId'),
@@ -125,7 +125,7 @@ export async function createPost(title,content,surveyId){
 // 게시글 검색
 export async function getSearchedPosts(word){
     const response = await axios.get(
-        "http://10.108.24.189/search?word=" + word,{
+        "http://spring-boot-docker-service/search?word=" + word,{
           params:{
               title:word
           }

@@ -39,7 +39,7 @@
     "test": "craco test",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://10.108.24.189",
+  "proxy": "http://spring-boot-docker-service",
   "eslintConfig": {
     "extends": [
       "react-app",
