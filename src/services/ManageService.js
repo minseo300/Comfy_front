@@ -13,7 +13,7 @@ const config={
 class ManageSurveyService {
     
     async getSurveys(){
-        const response=await axios.get(MANAGESURVEY_API_BASE_URL+"/surveys",{config});
+        const response=await axios.get(MANAGESURVEY_API_BASE_URL+"/surveys",{headers:config});
         if(response.config.headers.accesstoken){
             renew_accessToken(response.config.headers.accesstoken);
         }
@@ -26,7 +26,7 @@ class ManageSurveyService {
         console.log('[updateSurvey] - memberId',memberId);
         console.log('[updateSurvey] - accessToken',accessToken);
         console.log('[updateSurvey] - refreshToken',refreshToken);
-        const response=await axios.patch(`/surveys/${surveyId}`,{config})
+        const response=await axios.patch(`/surveys/${surveyId}`,{headers:config})
         if(response.config.headers.accesstoken){
             renew_accessToken(response.config.headers.accesstoken);
         }
