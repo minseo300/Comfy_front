@@ -7,66 +7,64 @@ const memberId=localStorage.getItem('memberId');
 const refreshToken=localStorage.getItem('refreshToken');
 const config={
     withCredentials:true,
-    ACCESS_TOKEN:localStorage.getItem('accessToken'),
-    REFRESH_TOKEN:localStorage.getItem('refreshToken')
+    accesstoken:localStorage.getItem('accessToken'),
+    refreshtoken:localStorage.getItem('refreshToken')
 }
 class ManageSurveyService {
     
-    getSurveys(){
-        const response=axios.get(MANAGESURVEY_API_BASE_URL+"/surveys",{headers:config});
-        if(response.data.code===2002){
-            return 100;
+    async getSurveys(){
+        const response=await axios.get(MANAGESURVEY_API_BASE_URL+"/surveys",{config});
+        if(response.config.headers.accesstoken){
+            renew_accessToken(response.config.headers.accesstoken);
         }
-        else renew_accessToken(response.config.headers.ACCESS_TOKEN);
-        
         return response;
     }
 
-    updateSurvey(surveyId,memberId,accessToken,refreshToken){
+    async updateSurvey(surveyId,memberId,accessToken,refreshToken){
         // return axios.put(MANAGESURVEY_API_BASE_URL + '/' + surveyId, survey);
         console.log('[updateSurvey] - surveyId',surveyId);
         console.log('[updateSurvey] - memberId',memberId);
         console.log('[updateSurvey] - accessToken',accessToken);
         console.log('[updateSurvey] - refreshToken',refreshToken);
-        const response=axios.patch(`/survey/${surveyId}`)
-        // if(response.data.code===2002){
-        //     return 100;
-        // }
-        // else renew_accessToken(response.config.headers.ACCESS_TOKEN);
-        
+        const response=await axios.patch(`/surveys/${surveyId}`,{config})
+        if(response.config.headers.accesstoken){
+            renew_accessToken(response.config.headers.accesstoken);
+        }
         return response;
         //axios.put(MANAGESURVEY_API_BASE_URL + '/' + surveyId, survey);
     }
 
-    updateSurvey2(surveyId){
-        const response=axios.patch(MANAGESURVEY_API_BASE_URL+"/survey" + '/' + surveyId,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
-        // if(response.data.code===2002){
-        //     return 100;
-        // }
-        // else renew_accessToken(response.config.headers.ACCESS_TOKEN);
-
+    async updateSurvey2(surveyId){
+        const response=await axios.patch(MANAGESURVEY_API_BASE_URL+"/surveys" + '/' + surveyId,{headers:config})
+        if(response.config.headers.accesstoken){
+            renew_accessToken(response.config.headers.accesstoken);
+        }
         return response;
     }
 
-    getSurveyById(memberId,accessToken,refreshToken){
+    async getSurveyById(memberId,accessToken,refreshToken){
         console.log('manage survey service - memberId',memberId);
-        const response=axios.get(`/surveys/${memberId}`,{headers:config})
-        if(response.data.code===2002){
-            return 100;
+        const response=await axios.get(`/surveys/${memberId}`,{headers:config})
+        if(response.config.headers.accesstoken){
+            renew_accessToken(response.config.headers.accesstoken);
         }
-        else renew_accessToken(response.config.headers.ACCESS_TOKEN);
-
         return response;
         // return axios.get(MANAGESURVEY_API_BASE_URL + '/' + memberId);
     }
 
-    getSurveyByStatus(status){
-        return axios.get(MANAGESURVEY_API_BASE_URL+"/surveys" + '/' + status+'/'+memberId,{headers:config});
+    async getSurveyByStatus(status){
+        const response =await axios.get(MANAGESURVEY_API_BASE_URL+"/surveys" + '/' + status+'/'+memberId,{headers:config});
+        if(response.config.headers.accesstoken){
+            renew_accessToken(response.config.headers.accesstoken);
+        }
+        return response
     }
 
-    deleteSurvey(surveyId){
-        console.log("delete")
-        const response=axios.delete(`${MANAGESURVEY_API_BASE_URL}/survey/${surveyId}/${memberId}`);      
+    async deleteSurvey(surveyId){
+        const response=await axios.delete(`${MANAGESURVEY_API_BASE_URL}/surveys/${surveyId}/${memberId}`,{headers:config}); 
+        if(response.config.headers.accesstoken){
+            renew_accessToken(response.config.headers.accesstoken);
+        }
         return response;
     }
 }

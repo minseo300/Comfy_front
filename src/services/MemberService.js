@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { logoutMember,initialize,renew_accessToken } from '../modules/member';
 
+const SURVEY_API_BASE_URL="http://210.109.60.160"
 // 구글 로그인
 export async function login(idToken){
     console.log('idToken',idToken);
-    const response=await axios.get(`http://210.109.60.160/login/google/${idToken}`).then((response)=>{
+    const response=await axios.get(`${SURVEY_API_BASE_URL}/login/google/${idToken}`,{headers: { 'Authorization': 'XXXX' }}).then((response)=>{
         console.log(response.data.result);
         if(response.data.code===2002){
             localStorage.clear();
@@ -25,24 +25,8 @@ export async function login(idToken){
 export async function logout(){
     const memberId=localStorage.getItem('memberId');
 
-    const response=axios.delete(`http://210.109.60.160/logout/${localStorage.getItem('memberId')}`);
+    const response=await axios.delete(`${SURVEY_API_BASE_URL}/logout/${localStorage.getItem('memberId')}`);
     console.log('logout response',response);
     
     return response;
 }
-
-// // clear localStorage
-// export function initialize(){
-//     localStorage.setItem('accessToken',null);
-//     localStorage.setItem('refreshToken',null);
-//     localStorage.setItem('memberId',0);
-//     localStorage.setItem('email',null);
-//     localStorage.setItem('name',null);
-//     //alert('LOGOUT');
-
-// }
-
-// // reset accessToken by refreshToken
-// export function renew_accessToken(accessToken){
-//     localStorage.setItem('accessToken',accessToken);
-// }
