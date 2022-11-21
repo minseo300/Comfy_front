@@ -4,7 +4,7 @@ const GET_POSTS='post/GET_POSTS';
 
 // 액션 생성 함수
 export async function getPosts(){
-    const response=await axios.get(`http://localhost:8080/community`);
+    const response=await axios.get(`http://210.109.60.160/community`);
     console.log('community response - ',response);
 
     return{
