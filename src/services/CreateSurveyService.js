@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 
-const SURVEY_API_BASE_URL = "http://172.16.1.245";
+const SURVEY_API_BASE_URL = "http://210.109.60.160";
 const SURVEY_SHARE_URL = "http://www.commfy.shop"
 
 class SurveyService {

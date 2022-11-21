@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { renew_accessToken } from '../modules/member';
 
-const SURVEY_API_BASE_URL = "http://172.16.1.245/result";
+const SURVEY_API_BASE_URL = "http://210.109.60.160/result";
 const config={
     withCredentials:true,
     ACCESS_TOKEN:localStorage.getItem('accessToken'),
