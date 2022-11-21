@@ -4,7 +4,7 @@ const SURVEY_API_BASE_URL="http://210.109.60.160"
 // 구글 로그인
 export async function login(idToken){
     console.log('idToken',idToken);
-    const response=await axios.get(`${SURVEY_API_BASE_URL}/login/google/${idToken}`,{headers: { 'Authorization': 'XXXX' }}).then((response)=>{
+    const response=await axios.get(`${SURVEY_API_BASE_URL}/login/google/${idToken}`).then((response)=>{
         console.log(response.data.result);
         if(response.data.code===2002){
             localStorage.clear();
