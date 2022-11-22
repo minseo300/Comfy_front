@@ -1,11 +1,12 @@
 import axios from 'axios';
 import { renew_accessToken,initialize } from '../modules/member';
+import * as Sentry from "@sentry/react";
 
 const accessToken=localStorage.getItem('accessToken');
 const memberId=localStorage.getItem('memberId');
 const refreshToken=localStorage.getItem('refreshToken');
 
-const SURVEY_API_BASE_URL="http://210.109.60.160"
+const SURVEY_API_BASE_URL=`${process.env.REACT_APP_API_URL}`
 
 const config={
     withCredentials:true,
@@ -19,7 +20,9 @@ export async function getPosts(){
         memberId=0
     }
     // else memberId=localStorage.getItem('memberId');
-    const response=await axios.get(`${SURVEY_API_BASE_URL}/community/${memberId}`);
+    const response=await axios.get(`${SURVEY_API_BASE_URL}/community/${memberId}`).catch(function(e){
+        Sentry.captureException(e);
+    });
     console.log('getPosts response: ',response);
     return response.data.result;
 }
@@ -29,7 +32,9 @@ export async function getMyPagePosts(){
     
     const memberId=localStorage.getItem('memberId');
 
-    const response=await axios.get(`${SURVEY_API_BASE_URL}/myPage/${memberId}`,{headers:config});
+    const response=await axios.get(`${SURVEY_API_BASE_URL}/myPage/${memberId}`,{headers:config}).catch(function(e){
+        Sentry.captureException(e);
+    });
     console.log('getMyPagePosts response: ',response);
     if(response.data.code===2002){
         return 100;
@@ -45,7 +50,9 @@ export async function getMyPagePosts(){
 export async function deleteMyPost(postId){
     const memberId=localStorage.getItem('memberId');
 
-    const response=await axios.delete(`${SURVEY_API_BASE_URL}/post/${postId}/${memberId}`,{headers:config});
+    const response=await axios.delete(`${SURVEY_API_BASE_URL}/post/${postId}/${memberId}`,{headers:config}).catch(function(e){
+        Sentry.captureException(e);
+    });
     console.log('deleteMyPost response: ',response);
     if(response.data.code===2002){
         return 100;
@@ -66,7 +73,9 @@ export async function addBookmark(postId){
         memberId:localStorage.getItem('memberId'),
         postId:postId
     };
-    const response=await axios.post('${SURVEY_API_BASE_URL}/bookmark',data,{headers:config});
+    const response=await axios.post('${SURVEY_API_BASE_URL}/bookmark',data,{headers:config}).catch(function(e){
+        Sentry.captureException(e);
+    });
     //const response=await axios.post(`${SURVEY_API_BASE_URL}/bookmark/${postId}/${memberId}`,{config});
     console.log('[ADD BOOKMARK] response',response);
     if(response.data.code===2002){
@@ -87,7 +96,9 @@ export async function deleteBookmark(postId){
         memberId:localStorage.getItem('memberId'),
         postId:postId
     };
-    const response=await axios.delete(`${SURVEY_API_BASE_URL}/bookmark/${postId}/${memberId}`,{headers:config});
+    const response=await axios.delete(`${SURVEY_API_BASE_URL}/bookmark/${postId}/${memberId}`,{headers:config}).catch(function(e){
+        Sentry.captureException(e);
+    });
     //const response=await axios.delete(`${SURVEY_API_BASE_URL}/bookmark/${postId}/${memberId}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
     if(response.data.code===2002){
         return 100;
@@ -108,7 +119,9 @@ export async function getPostInfo(postId){
     console.log(memberId)
     console.log('getPostInfo - postId',postId);
 
-    const response=await axios.get(`${SURVEY_API_BASE_URL}/post/${postId}/${memberId}`);
+    const response=await axios.get(`${SURVEY_API_BASE_URL}/post/${postId}/${memberId}`).catch(function(e){
+        Sentry.captureException(e);
+    });
 
     return response.data.result;
 }
@@ -122,7 +135,9 @@ export async function createPost(title,content,surveyId){
             memberId:localStorage.getItem('memberId'),
             surveyId:surveyId
         }
-      );
+      ).catch(function(e){
+        Sentry.captureException(e);
+    });
     if(response.data.code===2002){
         return 100;
     }
@@ -141,7 +156,9 @@ export async function getSearchedPosts(word){
               title:word
           }
         }
-      );
+      ).catch(function(e){
+        Sentry.captureException(e);
+    });
     
     console.log('getSearchedPosts response',response);
     return response.data.result;

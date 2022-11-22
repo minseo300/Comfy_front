@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { renew_accessToken,initialize } from '../modules/member';
-const MANAGESURVEY_API_BASE_URL = "http://210.109.60.160";
+import * as Sentry from "@sentry/react";
+
+const MANAGESURVEY_API_BASE_URL = `${process.env.REACT_APP_API_URL}`;
 
 const accessToken=localStorage.getItem('accessToken');
 const memberId=localStorage.getItem('memberId');
@@ -13,7 +15,9 @@ const config={
 class ManageSurveyService {
     
     async getSurveys(){
-        const response=await axios.get(MANAGESURVEY_API_BASE_URL+"/surveys",{headers:config});
+        const response=await axios.get(MANAGESURVEY_API_BASE_URL+"/surveys",{headers:config}).catch(function(e){
+            Sentry.captureException(e);
+        });
         if(response.config.headers.accesstoken){
             renew_accessToken(response.config.headers.accesstoken);
         }
@@ -26,7 +30,9 @@ class ManageSurveyService {
         console.log('[updateSurvey] - memberId',memberId);
         console.log('[updateSurvey] - accessToken',accessToken);
         console.log('[updateSurvey] - refreshToken',refreshToken);
-        const response=await axios.patch(`/surveys/${surveyId}`,{headers:config})
+        const response=await axios.patch(`/surveys/${surveyId}`,{headers:config}).catch(function(e){
+            Sentry.captureException(e);
+        }); 
         if(response.config.headers.accesstoken){
             renew_accessToken(response.config.headers.accesstoken);
         }
@@ -35,7 +41,9 @@ class ManageSurveyService {
     }
 
     async updateSurvey2(surveyId){
-        const response=await axios.patch(MANAGESURVEY_API_BASE_URL+"/surveys" + '/' + surveyId,{headers:config})
+        const response=await axios.patch(MANAGESURVEY_API_BASE_URL+"/surveys" + '/' + surveyId,{headers:config}).catch(function(e){
+            Sentry.captureException(e);
+        }); 
         if(response.config.headers.accesstoken){
             renew_accessToken(response.config.headers.accesstoken);
         }
@@ -44,7 +52,9 @@ class ManageSurveyService {
 
     async getSurveyById(memberId,accessToken,refreshToken){
         console.log('manage survey service - memberId',memberId);
-        const response=await axios.get(`/surveys/${memberId}`,{headers:config})
+        const response=await axios.get(`/surveys/${memberId}`,{headers:config}).catch(function(e){
+            Sentry.captureException(e);
+        }); 
         if(response.config.headers.accesstoken){
             renew_accessToken(response.config.headers.accesstoken);
         }
@@ -53,7 +63,9 @@ class ManageSurveyService {
     }
 
     async getSurveyByStatus(status){
-        const response =await axios.get(MANAGESURVEY_API_BASE_URL+"/surveys" + '/' + status+'/'+memberId,{headers:config});
+        const response =await axios.get(MANAGESURVEY_API_BASE_URL+"/surveys" + '/' + status+'/'+memberId,{headers:config}).catch(function(e){
+            Sentry.captureException(e);
+        });
         if(response.config.headers.accesstoken){
             renew_accessToken(response.config.headers.accesstoken);
         }
@@ -61,7 +73,9 @@ class ManageSurveyService {
     }
 
     async deleteSurvey(surveyId){
-        const response=await axios.delete(`${MANAGESURVEY_API_BASE_URL}/surveys/${surveyId}/${memberId}`,{headers:config}); 
+        const response=await axios.delete(`${MANAGESURVEY_API_BASE_URL}/surveys/${surveyId}/${memberId}`,{headers:config}).catch(function(e){
+            Sentry.captureException(e);
+        }); 
         if(response.config.headers.accesstoken){
             renew_accessToken(response.config.headers.accesstoken);
         }

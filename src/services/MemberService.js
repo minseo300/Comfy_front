@@ -1,6 +1,7 @@
 import axios from 'axios';
+import * as Sentry from "@sentry/react";
 
-const SURVEY_API_BASE_URL="http://210.109.60.160"
+const SURVEY_API_BASE_URL=`${process.env.REACT_APP_API_URL}`
 // 구글 로그인
 export async function login(idToken){
     console.log('idToken',idToken);
@@ -16,7 +17,9 @@ export async function login(idToken){
             localStorage.setItem('email',response.data.result.email);
             localStorage.setItem('name',response.data.result.memberName);
         }
-    })
+    }).catch(function(e){
+        Sentry.captureException(e);
+    }); 
 
     
 }
@@ -25,7 +28,9 @@ export async function login(idToken){
 export async function logout(){
     const memberId=localStorage.getItem('memberId');
 
-    const response=await axios.delete(`${SURVEY_API_BASE_URL}/logout/${localStorage.getItem('memberId')}`);
+    const response=await axios.delete(`${SURVEY_API_BASE_URL}/logout/${localStorage.getItem('memberId')}`).catch(function(e){
+        Sentry.captureException(e);
+    });
     console.log('logout response',response);
     
     return response;
