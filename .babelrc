@@ -1,10 +1,10 @@
-{
-    "env": {
-      "development": {
-        "plugins": ["transform-remove-console"]
-      },
-      "production": {
-        "plugins": ["transform-remove-console"]
-      }
-    }
-  }
+// {
+//     "env": {
+//       "development": {
+//         "plugins": ["transform-remove-console"]
+//       },
+//       "production": {
+//         "plugins": ["transform-remove-console"]
+//       }
+//     }
+//   }
