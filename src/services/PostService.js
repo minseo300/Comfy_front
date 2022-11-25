@@ -6,7 +6,7 @@ const accessToken=localStorage.getItem('accessToken');
 const memberId=localStorage.getItem('memberId');
 const refreshToken=localStorage.getItem('refreshToken');
 
-const SURVEY_API_BASE_URL=`${process.env.REACT_APP_API_URL}`
+const SURVEY_API_BASE_URL=`${process.env.REACT_APP_API_URL}`;
 
 const config={
     withCredentials:true,
@@ -22,7 +22,7 @@ export async function getPosts(){
     // else memberId=localStorage.getItem('memberId');
     const response=await axios.get(`${SURVEY_API_BASE_URL}/community/${memberId}`).catch(function(e){
         Sentry.captureException(e);
-    });
+    })
     console.log('getPosts response: ',response);
     return response.data.result;
 }
@@ -34,13 +34,19 @@ export async function getMyPagePosts(){
 
     const response=await axios.get(`${SURVEY_API_BASE_URL}/myPage/${memberId}`,{headers:config}).catch(function(e){
         Sentry.captureException(e);
-    });
+    })
     console.log('getMyPagePosts response: ',response);
     if(response.data.code===2002){
         return 100;
     }
-    if(response.config.headers.accesstoken){
-        renew_accessToken(response.config.headers.accesstoken);
+    if(response.headers["auth-token"]){
+        const auth_token=response.headers["auth-token"].split(';',2)[0].split('=',2)[1]
+        const access_Token=auth_token.split(":",4)[1]
+        const refresh_Token=auth_token.split(":",4)[3]
+        renew_accessToken(access_Token,refresh_Token);
+    }
+    if(response.status===401){
+        initialize()
     }
 
     return response.data.result;
@@ -52,13 +58,19 @@ export async function deleteMyPost(postId){
 
     const response=await axios.delete(`${SURVEY_API_BASE_URL}/post/${postId}/${memberId}`,{headers:config}).catch(function(e){
         Sentry.captureException(e);
-    });
+    })
     console.log('deleteMyPost response: ',response);
     if(response.data.code===2002){
         return 100;
     }
-    if(response.config.headers.accesstoken){
-        renew_accessToken(response.config.headers.accesstoken);
+    if(response.headers["auth-token"]){
+        const auth_token=response.headers["auth-token"].split(';',2)[0].split('=',2)[1]
+        const access_Token=auth_token.split(":",4)[1]
+        const refresh_Token=auth_token.split(":",4)[3]
+        renew_accessToken(access_Token,refresh_Token);
+    }
+    if(response.status===401){
+        initialize()
     }
     return response.data.result;
 }
@@ -75,14 +87,19 @@ export async function addBookmark(postId){
     };
     const response=await axios.post('${SURVEY_API_BASE_URL}/bookmark',data,{headers:config}).catch(function(e){
         Sentry.captureException(e);
-    });
-    //const response=await axios.post(`${SURVEY_API_BASE_URL}/bookmark/${postId}/${memberId}`,{config});
+    })
     console.log('[ADD BOOKMARK] response',response);
     if(response.data.code===2002){
         return 100;
     }
-    if(response.config.headers.accesstoken){
-        renew_accessToken(response.config.headers.accesstoken);
+    if(response.headers["auth-token"]){
+        const auth_token=response.headers["auth-token"].split(';',2)[0].split('=',2)[1]
+        const access_Token=auth_token.split(":",4)[1]
+        const refresh_Token=auth_token.split(":",4)[3]
+        renew_accessToken(access_Token,refresh_Token);
+    }
+    if(response.status===401){
+        initialize()
     }
     return response.data.result;
 
@@ -98,13 +115,18 @@ export async function deleteBookmark(postId){
     };
     const response=await axios.delete(`${SURVEY_API_BASE_URL}/bookmark/${postId}/${memberId}`,{headers:config}).catch(function(e){
         Sentry.captureException(e);
-    });
-    //const response=await axios.delete(`${SURVEY_API_BASE_URL}/bookmark/${postId}/${memberId}`,{headers:{withCredentials: true,'Access-Control-Allow-Origin':'*','ACCESS_TOKEN':`${accessToken}`,'REFRESH_TOKEN':`${refreshToken}`}});
+    })
     if(response.data.code===2002){
         return 100;
     }
-    if(response.config.headers.accesstoken){
-        renew_accessToken(response.config.headers.accesstoken);
+    if(response.headers["auth-token"]){
+        const auth_token=response.headers["auth-token"].split(';',2)[0].split('=',2)[1]
+        const access_Token=auth_token.split(":",4)[1]
+        const refresh_Token=auth_token.split(":",4)[3]
+        renew_accessToken(access_Token,refresh_Token);
+    }
+    if(response.status===401){
+        initialize()
     }
     
     return response.data.result;
@@ -121,7 +143,7 @@ export async function getPostInfo(postId){
 
     const response=await axios.get(`${SURVEY_API_BASE_URL}/post/${postId}/${memberId}`).catch(function(e){
         Sentry.captureException(e);
-    });
+    })
 
     return response.data.result;
 }
@@ -135,16 +157,19 @@ export async function createPost(title,content,surveyId){
             memberId:localStorage.getItem('memberId'),
             surveyId:surveyId
         }
-      ).catch(function(e){
-        Sentry.captureException(e);
-    });
+      );
     if(response.data.code===2002){
         return 100;
     }
-    if(response.config.headers.accesstoken){
-        renew_accessToken(response.config.headers.accesstoken);
+    if(response.headers["auth-token"]){
+        const auth_token=response.headers["auth-token"].split(';',2)[0].split('=',2)[1]
+        const access_Token=auth_token.split(":",4)[1]
+        const refresh_Token=auth_token.split(":",4)[3]
+        renew_accessToken(access_Token,refresh_Token);
     }
-
+    if(response.status===401){
+        initialize()
+    }
     return response.data.code;
 }
 
@@ -158,7 +183,7 @@ export async function getSearchedPosts(word){
         }
       ).catch(function(e){
         Sentry.captureException(e);
-    });
+    })
     
     console.log('getSearchedPosts response',response);
     return response.data.result;

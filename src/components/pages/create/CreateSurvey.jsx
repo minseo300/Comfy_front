@@ -128,14 +128,12 @@ function Share_modal() {
         
         console.log(survey_data)
         CreateSurveyService.saveSurvey(loc,memberid,survey_data).then(response=>{
+            console.log(response)
             if(response.data.result){
                 setId(response.data.result)
                 setShare(true)
                 const surveyId=response.data.result;
                 postSurveyThumbnail(surveyId);
-            }
-            else{
-                console.log(response.data)
             }
         })
     }
@@ -275,13 +273,14 @@ function CreateSurveySend() {
                     state["end"]="not"
                     setDisabled(true)
                     CreateSurveyService.saveSurvey(loc,memberid,state).then(response=>{
+                        console.log(response)
                         if(response.data.isSuccess || response.data.isSuccess===undefined){
                             if(!serverload){
                                 console.log('response',response);
                                 console.log('response data',response.data);
                                 const surveyId=response.data.result;
                                 console.log('after post survey: surveyId - ',surveyId);
-                                postSurveyThumbnail(surveyId);
+                                postSurveyThumbnail(surveyId)
                             }
                             navigate(`/temporary`)
                         }

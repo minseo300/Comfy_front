@@ -58,8 +58,8 @@ const resources = [
     }
 ]
 
-//const clientId="487333198384-nh6ucotf0f9djvv3u6oemopui89d8p7k.apps.googleusercontent.com";
-const clientId="150579669124-iuljf351licgh2lg7s35t1fcn9ct6k2h.apps.googleusercontent.com";
+const clientId="487333198384-nh6ucotf0f9djvv3u6oemopui89d8p7k.apps.googleusercontent.com";
+//const clientId="150579669124-iuljf351licgh2lg7s35t1fcn9ct6k2h.apps.googleusercontent.com";
 
 
 
@@ -76,7 +76,7 @@ function Header() {
 
     useEffect(()=>{
         console.log('header memberId is changed',typeof(localStorage.getItem('memberId')));
-        if(localStorage.getItem('memberId')==='0') {
+        if(!localStorage.getItem('memberId')) {
             setIsLogin(false);
             setLogoutAlert(true);
         }

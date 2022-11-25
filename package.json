@@ -32,6 +32,7 @@
     "redux": "^4.2.0",
     "redux-promise": "^0.6.0",
     "redux-thunk": "^2.4.1",
+    "sentry": "^0.1.2",
     "styled-components": "^5.3.6",
     "web-vitals": "^2.1.4"
   },
@@ -43,7 +44,6 @@
     "test": "craco test",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://210.109.60.160",
   "eslintConfig": {
     "extends": [
       "react-app",

@@ -1,12 +1,12 @@
 import axios from 'axios';
 import * as Sentry from "@sentry/react";
 
-const SURVEY_API_BASE_URL=`${process.env.REACT_APP_API_URL}`
+const SURVEY_API_BASE_URL=`${process.env.REACT_APP_API_URL}`;
 // 구글 로그인
 export async function login(idToken){
     console.log('idToken',idToken);
-    const response=await axios.get(`${SURVEY_API_BASE_URL}/login/google/${idToken}`).then((response)=>{
-        console.log(response.data.result);
+    const response=await axios.get(`${SURVEY_API_BASE_URL}/login/google/${idToken}`,{headers: { 'Authorization': 'XXXX' }}).then((response)=>{
+        console.log(response);
         if(response.data.code===2002){
             localStorage.clear();
         }
@@ -19,7 +19,7 @@ export async function login(idToken){
         }
     }).catch(function(e){
         Sentry.captureException(e);
-    }); 
+    })
 
     
 }
@@ -30,7 +30,7 @@ export async function logout(){
 
     const response=await axios.delete(`${SURVEY_API_BASE_URL}/logout/${localStorage.getItem('memberId')}`).catch(function(e){
         Sentry.captureException(e);
-    });
+    })
     console.log('logout response',response);
     
     return response;

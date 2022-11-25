@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { logout } from "../services/MemberService";
 
 const LOGIN_MEMBER='member/LOGIN_MEMBER';
@@ -32,19 +33,18 @@ export function logoutMember(){
 
 // clear localStorage
 export function initialize(){
-    localStorage.setItem('accessToken',null);
-    localStorage.setItem('refreshToken',null);
-    localStorage.setItem('memberId',0);
-    localStorage.setItem('email',null);
-    localStorage.setItem('name',null);
+    localStorage.clear()
+    window.location.replace("/")
     //alert('LOGOUT');
 
 }
 
 // reset accessToken by refreshToken
-export function renew_accessToken(accessToken){
+export function renew_accessToken(accessToken,refreshToken){
     console.log('renew accessToken',accessToken);
     localStorage.setItem('accessToken',accessToken);
+    console.log('renew refreshToken',refreshToken);
+    localStorage.setItem('refreshToken',refreshToken);
 }
 
 //모듈 초기 상태
