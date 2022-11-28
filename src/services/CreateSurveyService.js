@@ -3,8 +3,8 @@ import { useLocation } from 'react-router-dom';
 import { initialize, renew_accessToken } from '../modules/member';
 import * as Sentry from "@sentry/react";
 
-const SURVEY_API_BASE_URL = `${process.env.REACT_APP_API_URL}`;
-const SURVEY_SHARE_URL = `${process.env.REACT_APP_API_URL}`;
+const SURVEY_API_BASE_URL = "http://210.109.60.160";
+const SURVEY_SHARE_URL = "http://210.109.60.160";
 
 const config={
     withCredentials:true,
