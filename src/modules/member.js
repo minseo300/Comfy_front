@@ -41,10 +41,12 @@ export function initialize(){
 
 // reset accessToken by refreshToken
 export function renew_accessToken(accessToken,refreshToken){
-    console.log('renew accessToken',accessToken);
-    localStorage.setItem('accessToken',accessToken);
-    console.log('renew refreshToken',refreshToken);
-    localStorage.setItem('refreshToken',refreshToken);
+    if(accessToken && refreshToken){
+        console.log('renew accessToken',accessToken);
+        localStorage.setItem('accessToken',accessToken);
+        console.log('renew refreshToken',refreshToken);
+        localStorage.setItem('refreshToken',refreshToken);
+    }
 }
 
 //모듈 초기 상태
