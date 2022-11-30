@@ -89,7 +89,7 @@ export async function updateSurveyStatus(surveyId){
 export async function makeSurveyFromPost(surveyId){
     console.log('makeSurveyFromPost - surveyId',surveyId);
     
-    const response=await axios.post(`${SURVEY_API_BASE_URL}/created-survey/${surveyId}/${localStorage.getItem('memberId')}`,{headers:config}).catch(function(e){
+    const response=await axios.post(`${SURVEY_API_BASE_URL}/created-survey/${surveyId}/${localStorage.getItem('memberId')}`,{},{headers:config}).catch(function(e){
         Sentry.captureException(e);
     })
         
