@@ -70,7 +70,7 @@ class ManageSurveyService {
 
     async getSurveyById(memberId,accessToken,refreshToken){
         console.log('manage survey service - memberId',memberId);
-        const response=await axios.get(`/surveys/${memberId}`,{headers:config}).catch(function(e){
+        const response=await axios.get(MANAGESURVEY_API_BASE_URL+ "/surveys/" +memberId,{headers:config}).catch(function(e){
             Sentry.captureException(e);
         })
         if(response.headers["auth-token"]){

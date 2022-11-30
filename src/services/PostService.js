@@ -85,7 +85,7 @@ export async function addBookmark(postId){
         memberId:localStorage.getItem('memberId'),
         postId:postId
     };
-    const response=await axios.post('${SURVEY_API_BASE_URL}/bookmark',data,{headers:config}).catch(function(e){
+    const response=await axios.post(`${SURVEY_API_BASE_URL}/bookmark`,data,{headers:config}).catch(function(e){
         Sentry.captureException(e);
     })
     console.log('[ADD BOOKMARK] response',response);
