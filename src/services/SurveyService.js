@@ -66,7 +66,7 @@ export async function deleteSurvey(surveyId){
 export async function updateSurveyStatus(surveyId){
     const memberId=localStorage.getItem('memberId');
 
-    const response=await axios.patch(`${SURVEY_API_BASE_URL}/surveys/${surveyId}`,{headers:config}).catch(function(e){
+    const response=await axios.patch(`${SURVEY_API_BASE_URL}/surveys/${surveyId}`,{},{headers:config}).catch(function(e){
         Sentry.captureException(e);
     })
     console.log('updateSurveyStatus response: ',response);
