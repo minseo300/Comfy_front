@@ -105,6 +105,32 @@ export async function addBookmark(postId){
 
 }
 
+// 게시글 등록
+export async function createPost(title,content,surveyId){
+    const data={
+        title:title,
+        contents:content,
+        memberId:localStorage.getItem('memberId'),
+        surveyId:surveyId
+    }
+    console.log('posting accessToken',config.accesstoken);
+    console.log('posting refreshToken',config.refreshtoken);
+    const response=await axios.post(`${SURVEY_API_BASE_URL}/posting`,data,{headers:config});
+    if(response.data.code===2002){
+        return 100;
+    }
+    if(response.headers["auth-token"]){
+        const auth_token=response.headers["auth-token"].split(';',2)[0].split('=',2)[1]
+        const access_Token=auth_token.split(":",4)[1]
+        const refresh_Token=auth_token.split(":",4)[3]
+        renew_accessToken(access_Token,refresh_Token);
+    }
+    if(response.status===401){
+        initialize()
+    }
+    return response.data.code;
+}
+
 // 북마크 취소
 export async function deleteBookmark(postId){
     // const memberId=localStorage.getItem('memberId');
@@ -148,31 +174,6 @@ export async function getPostInfo(postId){
     return response.data.result;
 }
 
-// 게시글 등록
-export async function createPost(title,content,surveyId){
-    const data={
-        title:title,
-        contents:content,
-        memberId:localStorage.getItem('memberId'),
-        surveyId:surveyId
-    }
-    const response=await axios.post(
-        `${SURVEY_API_BASE_URL}/posting`,data,{headers:config}
-      );
-    if(response.data.code===2002){
-        return 100;
-    }
-    if(response.headers["auth-token"]){
-        const auth_token=response.headers["auth-token"].split(';',2)[0].split('=',2)[1]
-        const access_Token=auth_token.split(":",4)[1]
-        const refresh_Token=auth_token.split(":",4)[3]
-        renew_accessToken(access_Token,refresh_Token);
-    }
-    if(response.status===401){
-        initialize()
-    }
-    return response.data.code;
-}
 
 // 게시글 검색
 export async function getSearchedPosts(word){
