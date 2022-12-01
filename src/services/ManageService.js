@@ -36,7 +36,7 @@ class ManageSurveyService {
         console.log('[updateSurvey] - memberId',memberId);
         console.log('[updateSurvey] - accessToken',accessToken);
         console.log('[updateSurvey] - refreshToken',refreshToken);
-        const response=await axios.patch(`/surveys/${surveyId}`,{config}).catch(function(e){
+        const response=await axios.patch(`/surveys/${surveyId}`,{},{headers:config}).catch(function(e){
             Sentry.captureException(e);
         })
         if(response.headers["auth-token"]){
@@ -53,7 +53,7 @@ class ManageSurveyService {
     }
 
     async updateSurvey2(surveyId){
-        const response=await axios.patch(MANAGESURVEY_API_BASE_URL+"/surveys" + '/' + surveyId,{headers:config}).catch(function(e){
+        const response=await axios.patch(MANAGESURVEY_API_BASE_URL+"/surveys" + '/' + surveyId,{},{headers:config}).catch(function(e){
             Sentry.captureException(e);
         })
         if(response.headers["auth-token"]){
