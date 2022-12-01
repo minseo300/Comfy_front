@@ -10,8 +10,10 @@ const SURVEY_API_BASE_URL="http://210.109.60.160";
 
 const config={
     withCredentials:true,
-    accesstoken:localStorage.getItem('accessToken'),
-    refreshtoken:localStorage.getItem('refreshToken')
+    accesstoken:"eyJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6InJucm1mZGJ4YnFtZHlkQGdtYWlsLmNvbSIsImlhdCI6MTY2OTg3MTcwMSwiZXhwIjoxNjY5ODczNTAxfQ.dfbR77xvVLbI-eEQHxciRsfoQ2NgkgyGFNaIp9Dlx5tS8CXyFppTBfezyJkF_GWstizkCo-E0X6fMQa1LVwuSQ",
+    refrestoken:"dca114cf823b1d7f3bdb1bc866d007f13442bf68b9525f4d7f29f852d56c0565"
+    // accesstoken:localStorage.getItem('accessToken'),
+    // refreshtoken:localStorage.getItem('refreshToken')
 }
 // 커뮤니티 조회
 export async function getPosts(){
