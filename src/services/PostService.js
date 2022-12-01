@@ -150,13 +150,14 @@ export async function getPostInfo(postId){
 
 // 게시글 등록
 export async function createPost(title,content,surveyId){
+    const data={
+        title:title,
+        contents:content,
+        memberId:localStorage.getItem('memberId'),
+        surveyId:surveyId
+    }
     const response=await axios.post(
-        `${SURVEY_API_BASE_URL}/posting`,{
-            title:title,
-            contents:content,
-            memberId:localStorage.getItem('memberId'),
-            surveyId:surveyId
-        }
+        `${SURVEY_API_BASE_URL}/posting`,data,{headers:config}
       );
     if(response.data.code===2002){
         return 100;
