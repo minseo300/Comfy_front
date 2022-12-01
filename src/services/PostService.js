@@ -10,10 +10,10 @@ const SURVEY_API_BASE_URL="http://210.109.60.160";
 
 const config={
     withCredentials:true,
-    accesstoken:"eyJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6Imxtc2xtc21zMDYxNkBnbWFpbC5jb20iLCJpYXQiOjE2Njk4NzM3MjQsImV4cCI6MTY2OTg3MzczNH0.0mscvHKaYXUNNFUWc-_9Y426452DinGzyDOgkeGXHNtrUUiGITgPOiQeO8dN0uy7RVcK8xCGlHKyTAANbXDgDg",
-    refreshtoken:"89b6a4b11cae88994b9e1a69d60764139b1fe6e8500501007ef2424283faeb36"
-    // accesstoken:localStorage.getItem('accessToken'),
-    // refreshtoken:localStorage.getItem('refreshToken')
+    // accesstoken:"eyJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6Imxtc2xtc21zMDYxNkBnbWFpbC5jb20iLCJpYXQiOjE2Njk4NzM3MjQsImV4cCI6MTY2OTg3MzczNH0.0mscvHKaYXUNNFUWc-_9Y426452DinGzyDOgkeGXHNtrUUiGITgPOiQeO8dN0uy7RVcK8xCGlHKyTAANbXDgDg",
+    // refreshtoken:"89b6a4b11cae88994b9e1a69d60764139b1fe6e8500501007ef2424283faeb36"
+    accesstoken:localStorage.getItem('accessToken'),
+    refreshtoken:localStorage.getItem('refreshToken')
 }
 // 커뮤니티 조회
 export async function getPosts(){
