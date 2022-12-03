@@ -35,7 +35,7 @@ function QuestionResult() {
     } else {
       if (questionList[0].question.surveyId !== surveyId) {
         SurveyService.getSurveyQuestion(surveyId).then((res) => {
-          console.log("QuestionResult - getSurveyQuestion response: ",res);
+        console.log("QuestionResult - getSurveyQuestion response: ",res);
 
           dispatch(getQuestion(res.data.result));
           // if(res.data.code===2002){
