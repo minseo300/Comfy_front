@@ -58,7 +58,7 @@ export async function getMyPagePosts(){
 export async function deleteMyPost(postId){
     const memberId=localStorage.getItem('memberId');
 
-    const response=await axios.delete(`${SURVEY_API_BASE_URL}/post/${postId}/${memberId}`,{headers:config}).catch(function(e){
+    const response=await axios.delete(`${SURVEY_API_BASE_URL}/post/${postId}/${memberId}`).catch(function(e){
         Sentry.captureException(e);
     })
     console.log('deleteMyPost response: ',response);
