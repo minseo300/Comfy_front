@@ -78,7 +78,6 @@ function result(state = initialState, action) {
                 state.questions = [];
                 state.questionId = 0;
             }
-            console.log("result - questions: ",questions);
             return {
                 ...state,
                 questionId: action.payload[0].question.id,
