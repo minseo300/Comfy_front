@@ -36,11 +36,10 @@ function MainPage(props) {
     getPosts().then((response)=>{
       console.log('mainpage response',response);
       setpostList(response);
-      if(localStorage.getItem('memberId')!==0) {
-        setNewPostButton(true);
-        
+      if(localStorage.getItem('memberId')==='0') {
+        setNewPostButton(false);
       }
-      else setNewPostButton(false);
+      else setNewPostButton(true);
     });
   },[member]);
   
