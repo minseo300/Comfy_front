@@ -118,7 +118,7 @@ export async function deleteMyPost(postId){
         postId:postId,
         memberId:memberId
     }
-    const response=await axios.delete(`${SURVEY_API_BASE_URL}/post`,data).catch(function(e){
+    const response=await axios.delete(`${SURVEY_API_BASE_URL}/post`,{data:data}).catch(function(e){
         Sentry.captureException(e);
     })
     console.log('deleteMyPost response: ',response);
