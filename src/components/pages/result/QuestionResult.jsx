@@ -18,6 +18,8 @@ function QuestionResult() {
     if (Object.keys(questionList).length === 0) {
       SurveyService.getSurveyQuestion(surveyId).then((res) => {
         console.log("QuestionResult - getSurveyQuestion: ",surveyId);
+        console.log("QuestionResult - getSurveyQuestion response: ",res);
+
         dispatch(getQuestion(res.data.result));
         // if(res.data.code===2002){
         //   alert("Comfy를 사용하고 싶으시면 로그인해주세요!");
