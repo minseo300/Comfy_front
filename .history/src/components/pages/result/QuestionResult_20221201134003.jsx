@@ -17,33 +17,30 @@ function QuestionResult() {
   useEffect(() => {
     if (Object.keys(questionList).length === 0) {
       SurveyService.getSurveyQuestion(surveyId).then((res) => {
-        console.log("QuestionResult - getSurveyQuestion: ",surveyId);
-        dispatch(getQuestion(res.data.result));
-        // if(res.data.code===2002){
-        //   alert("Comfy를 사용하고 싶으시면 로그인해주세요!");
-        //   dispatch(logoutMember());
-        //   navigate('/community');
-        // }
-        // else{
-        //   dispatch(getQuestion(res.data.result));
-        //   renew_accessToken(res.config.headers.ACCESS_TOKEN);
+        if(res.data.code===2002){
+          alert("Comfy를 사용하고 싶으시면 로그인해주세요!");
+          dispatch(logoutMember());
+          navigate('/community');
+        }
+        else{
+          dispatch(getQuestion(res.data.result));
+          renew_accessToken(res.config.headers.ACCESS_TOKEN);
 
-        // } 
+        } 
       })
     } else {
       if (questionList[0].question.surveyId !== surveyId) {
         SurveyService.getSurveyQuestion(surveyId).then((res) => {
-          dispatch(getQuestion(res.data.result));
-          // if(res.data.code===2002){
-          //     alert("Comfy를 사용하고 싶으시면 로그인해주세요!");
-          //     dispatch(logoutMember());
-          //     navigate('/community');
+          if(res.data.code===2002){
+              alert("Comfy를 사용하고 싶으시면 로그인해주세요!");
+              dispatch(logoutMember());
+              navigate('/community');
             
-          // }
-          // else {
-          //   dispatch(getQuestion(res.data.result));
-          //   renew_accessToken(res.config.headers.ACCESS_TOKEN);
-          // }
+          }
+          else {
+            dispatch(getQuestion(res.data.result));
+            renew_accessToken(res.config.headers.ACCESS_TOKEN);
+          }
         })
       } 
     }
