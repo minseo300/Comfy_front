@@ -281,7 +281,9 @@ function CreateSurveySend() {
                             if(!serverload){
                                 console.log('response',response);
                                 console.log('response data',response.data);
+                                
                                 console.log('after post survey: surveyId - ',surveyId);
+                                
                             }
                             navigate(`/temporary`)
                         }

@@ -273,15 +273,15 @@ function CreateSurveySend() {
                     state["end"]="not"
                     setDisabled(true)
                     CreateSurveyService.saveSurvey(loc,memberid,state).then(response=>{
-                        
+                        postSurveyThumbnail(surveyId);
                         console.log(response)
                         if(response.data.isSuccess || response.data.isSuccess===undefined){
-                            const surveyId=response.data.result;
-                            postSurveyThumbnail(surveyId);
                             if(!serverload){
                                 console.log('response',response);
                                 console.log('response data',response.data);
+                                const surveyId=response.data.result;
                                 console.log('after post survey: surveyId - ',surveyId);
+                                
                             }
                             navigate(`/temporary`)
                         }
