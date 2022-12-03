@@ -114,8 +114,11 @@ export async function createPost(title,content,surveyId){
 // 글 삭제
 export async function deleteMyPost(postId){
     const memberId=localStorage.getItem('memberId');
-
-    const response=await axios.delete(`${SURVEY_API_BASE_URL}/post/${postId}/${memberId}`).catch(function(e){
+    const data={
+        postId:postId,
+        memberId:memberId
+    }
+    const response=await axios.delete(`${SURVEY_API_BASE_URL}/post`,data).catch(function(e){
         Sentry.captureException(e);
     })
     console.log('deleteMyPost response: ',response);
