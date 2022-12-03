@@ -54,28 +54,7 @@ export async function getMyPagePosts(){
     return response.data.result;
 }
 
-// 글 삭제
-export async function deleteMyPost(postId){
-    const memberId=localStorage.getItem('memberId');
 
-    const response=await axios.delete(`${SURVEY_API_BASE_URL}/post/${postId}/${memberId}`).catch(function(e){
-        Sentry.captureException(e);
-    })
-    console.log('deleteMyPost response: ',response);
-    if(response.data.code===2002){
-        return 100;
-    }
-    if(response.headers["auth-token"]){
-        const auth_token=response.headers["auth-token"].split(';',2)[0].split('=',2)[1]
-        const access_Token=auth_token.split(":",4)[1]
-        const refresh_Token=auth_token.split(":",4)[3]
-        renew_accessToken(access_Token,refresh_Token);
-    }
-    if(response.status===401){
-        initialize()
-    }
-    return response.data.result;
-}
 
 // 북마크 등록
 export async function addBookmark(postId){
@@ -132,7 +111,28 @@ export async function createPost(title,content,surveyId){
     }
     return response.data.code;
 }
+// 글 삭제
+export async function deleteMyPost(postId){
+    const memberId=localStorage.getItem('memberId');
 
+    const response=await axios.delete(`${SURVEY_API_BASE_URL}/post/${postId}/${memberId}`).catch(function(e){
+        Sentry.captureException(e);
+    })
+    console.log('deleteMyPost response: ',response);
+    // if(response.data.code===2002){
+    //     return 100;
+    // }
+    // if(response.headers["auth-token"]){
+    //     const auth_token=response.headers["auth-token"].split(';',2)[0].split('=',2)[1]
+    //     const access_Token=auth_token.split(":",4)[1]
+    //     const refresh_Token=auth_token.split(":",4)[3]
+    //     renew_accessToken(access_Token,refresh_Token);
+    // }
+    // if(response.status===401){
+    //     initialize()
+    // }
+    return response.data.result;
+}
 // 북마크 취소
 export async function deleteBookmark(postId){
     // const memberId=localStorage.getItem('memberId');
