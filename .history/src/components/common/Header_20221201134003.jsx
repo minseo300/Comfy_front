@@ -296,7 +296,6 @@ function Header() {
                                     onClick={() => {
                                         logout().then((response)=>{
                                             console.log('[logout] - ',response);
-                                            localStorage.setItem('memberId',0);
                                             const loc=window.location.pathname;
                                             console.log('location',window.location.pathname);
                                             if(loc!=='/community') window.location.replace('/');
