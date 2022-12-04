@@ -125,7 +125,7 @@ function Share_modal() {
         //editSurvey/1/a@gmail.com //createSurvey/a@gmail.com
         survey_data["start"]=dateFns.format(startDate, "yyyy-MM-dd")
         survey_data["end"]=dateFns.format(endDate ? endDate : startDate, "yyyy-MM-dd")
-        
+
         console.log(survey_data)
         CreateSurveyService.saveSurvey(loc,memberid,survey_data).then(response=>{
             console.log(response)
@@ -273,11 +273,10 @@ function CreateSurveySend() {
                     state["end"]="not"
                     setDisabled(true)
                     CreateSurveyService.saveSurvey(loc,memberid,state).then(response=>{
-                        
                         console.log(response)
                         if(response.data.isSuccess || response.data.isSuccess===undefined){
                             const surveyId=response.data.result;
-                            postSurveyThumbnail(surveyId);
+                            // postSurveyThumbnail(surveyId);
                             if(!serverload){
                                 console.log('response',response);
                                 console.log('response data',response.data);
