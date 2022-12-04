@@ -16,7 +16,8 @@ class SurveyService {
 
     async saveSurvey(loc,memberid, data){
         axios.defaults.headers.post = null
-        const response=await axios.post(`${SURVEY_API_BASE_URL}${loc}/${memberid}`, data,{headers:config}).catch(function(e){
+        const thumbNum = Math.floor(Math.random() * 5 + 1);
+        const response=await axios.post(`${SURVEY_API_BASE_URL}${loc}/${memberid}/${thumbNum}`, data,{headers:config}).catch(function(e){
             Sentry.captureException(e);
         })
         if(response.headers["auth-token"]){

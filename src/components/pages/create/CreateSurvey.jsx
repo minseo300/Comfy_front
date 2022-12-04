@@ -132,8 +132,8 @@ function Share_modal() {
             if(response.data.result){
                 setId(response.data.result)
                 setShare(true)
-                const surveyId=response.data.result;
-                postSurveyThumbnail(surveyId);
+                // const surveyId=response.data.result;
+                // postSurveyThumbnail(surveyId);
             }
         })
     }
