@@ -75,7 +75,7 @@ function Header() {
 
 
     useEffect(()=>{
-        console.log('header memberId is changed',typeof(localStorage.getItem('memberId')));
+        
         if(!localStorage.getItem('memberId')) {
             setIsLogin(false);
             setLogoutAlert(true);
