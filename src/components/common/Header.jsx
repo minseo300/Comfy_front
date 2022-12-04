@@ -38,10 +38,10 @@ const solutions = [
         icon: Squares2X2Icon,
     }
 ]
-const callsToAction = [
-    { name: 'Watch Demo', href: '#', icon: PlayIcon },
-    { name: 'Contact Sales', href: '#', icon: PhoneIcon },
-]
+// const callsToAction = [
+//     { name: 'Watch Demo', href: '#', icon: PlayIcon },
+//     { name: 'Contact Sales', href: '#', icon: PhoneIcon },
+// ]
 const resources = [
    
     {
@@ -203,7 +203,7 @@ function Header() {
                                                         </a>
                                                     ))}
                                                 </div>
-                                                <div className="space-y-6 bg-gray-50 px-5 py-5 sm:flex sm:space-y-0 sm:space-x-10 sm:px-8">
+                                                {/* <div className="space-y-6 bg-gray-50 px-5 py-5 sm:flex sm:space-y-0 sm:space-x-10 sm:px-8">
                                                     {callsToAction.map((item) => (
                                                         <div key={item.name} className="flow-root">
                                                             <a
@@ -215,7 +215,7 @@ function Header() {
                                                             </a>
                                                         </div>
                                                     ))}
-                                                </div>
+                                                </div> */}
                                             </div>
                                         </Popover.Panel>
                                     </Transition>
