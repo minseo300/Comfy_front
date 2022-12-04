@@ -125,7 +125,8 @@ function ViewPostPage(props){
                                                 deleteMyPost(post.postId).then((response)=>{
                                                     navigate('/myPage');
                                                 })
-                                            }}/>}
+                                     
+                                     }}/>}
                                     </div>}
                                 </div>
                                 <div class='font-medium text-start text-slate-500 mb-5'>
