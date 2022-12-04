@@ -133,7 +133,7 @@ function Share_modal() {
                 setId(response.data.result)
                 setShare(true)
                 const surveyId=response.data.result;
-                postSurveyThumbnail(surveyId);
+                // postSurveyThumbnail(surveyId);
             }
         })
     }
@@ -276,7 +276,7 @@ function CreateSurveySend() {
                         console.log(response)
                         if(response.data.isSuccess || response.data.isSuccess===undefined){
                             const surveyId=response.data.result;
-                            postSurveyThumbnail(surveyId);
+                            // postSurveyThumbnail(surveyId);
                             if(!serverload){
                                 console.log('response',response);
                                 console.log('response data',response.data);
