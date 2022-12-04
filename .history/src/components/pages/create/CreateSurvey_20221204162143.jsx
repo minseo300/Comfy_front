@@ -276,7 +276,7 @@ function CreateSurveySend() {
                         console.log(response)
                         if(response.data.isSuccess || response.data.isSuccess===undefined){
                             const surveyId=response.data.result;
-                            postSurveyThumbnail(surveyId);
+                            // postSurveyThumbnail(surveyId);
                             if(!serverload){
                                 console.log('response',response);
                                 console.log('response data',response.data);
