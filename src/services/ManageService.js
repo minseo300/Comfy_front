@@ -2,7 +2,7 @@ import axios from 'axios';
 import { renew_accessToken,initialize } from '../modules/member';
 import * as Sentry from "@sentry/react";
 
-const MANAGESURVEY_API_BASE_URL = "http://172.16.1.245";
+const MANAGESURVEY_API_BASE_URL = "http://210.109.60.160";
 
 const accessToken=localStorage.getItem('accessToken');
 const memberId=localStorage.getItem('memberId');

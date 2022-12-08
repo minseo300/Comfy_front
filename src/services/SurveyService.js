@@ -6,7 +6,7 @@ const accessToken=localStorage.getItem('accessToken');
 const memberId=localStorage.getItem('memberId');
 const refreshToken=localStorage.getItem('refreshToken');
 
-const SURVEY_API_BASE_URL="http://172.16.1.245";
+const SURVEY_API_BASE_URL="http://210.109.60.160";
 
 const config={
     withCredentials:true,
