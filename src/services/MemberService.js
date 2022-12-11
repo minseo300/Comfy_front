@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as Sentry from "@sentry/react";
 
-const SURVEY_API_BASE_URL="http://210.109.60.160";
+const SURVEY_API_BASE_URL="https://210.109.60.160";
 // 구글 로그인
 export async function login(idToken){
     console.log('idToken',idToken);
