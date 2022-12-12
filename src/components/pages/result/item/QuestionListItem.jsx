@@ -33,7 +33,7 @@ function QuestionListItem(props) {
                 // array.push(<div className='mb-2 text-xl'>{question.answer[i].essay.contents}</div>)
                 essay.push(question.answer[i].essay.contents)
             }
-            axios.post('http://210.109.60.160/react_to_flask',{
+            axios.post('https://www.commfy.shop/api/react_to_flask',{
             essay
             }).then(function(response){
                 console.log(response.data)
