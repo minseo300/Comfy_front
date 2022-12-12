@@ -282,7 +282,7 @@ function CreateSurveySend() {
                                 console.log('response data',response.data);
                                 console.log('after post survey: surveyId - ',surveyId);
                             }
-                            navigate(`/temporary`)
+                            setTimeout(function() {navigate(`/temporary`)},500);
                         }
                         else{
                             setDisabled(false)
