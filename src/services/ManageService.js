@@ -2,7 +2,7 @@ import axios from 'axios';
 import { renew_accessToken,initialize } from '../modules/member';
 import * as Sentry from "@sentry/react";
 
-const MANAGESURVEY_API_BASE_URL = "https://www.commfy.shop/api";
+const MANAGESURVEY_API_BASE_URL = `${process.env.REACT_APP_API_URL}`;
 
 const accessToken=localStorage.getItem('accessToken');
 const memberId=localStorage.getItem('memberId');

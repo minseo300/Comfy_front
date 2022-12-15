@@ -6,7 +6,7 @@ const accessToken=localStorage.getItem('accessToken');
 const memberId=localStorage.getItem('memberId');
 const refreshToken=localStorage.getItem('refreshToken');
 
-const SURVEY_API_BASE_URL="https://www.commfy.shop/api";
+const SURVEY_API_BASE_URL=`${process.env.REACT_APP_API_URL}`;
 
 const config={
     withCredentials:true,

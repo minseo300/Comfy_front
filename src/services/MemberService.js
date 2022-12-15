@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as Sentry from "@sentry/react";
 
-const SURVEY_API_BASE_URL="https://www.commfy.shop/api";
+const SURVEY_API_BASE_URL=`${process.env.REACT_APP_API_URL}`;
 // 구글 로그인
 export async function login(idToken){
     console.log('idToken',idToken);

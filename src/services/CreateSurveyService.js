@@ -4,7 +4,7 @@ import { initialize, renew_accessToken } from '../modules/member';
 import * as Sentry from "@sentry/react";
 import { postSurveyThumbnail } from "../services/SurveyService";
 
-const SURVEY_API_BASE_URL = "https://www.commfy.shop/api";
+const SURVEY_API_BASE_URL = `${process.env.REACT_APP_API_URL}`;
 const SURVEY_SHARE_URL = "https://www.commfy.shop";
 
 const config={
