@@ -3,7 +3,7 @@ import { initialize, renew_accessToken } from '../modules/member';
 import * as Sentry from "@sentry/react";
 import { useNavigate } from 'react-router-dom';
 
-const SURVEY_API_BASE_URL = `${process.env.REACT_APP_API_URL}`+ "/result";
+const SURVEY_API_BASE_URL = `${process.env.REACT_APP_API_URL}/result`;
 const config={
     withCredentials:true,
     accesstoken:localStorage.getItem('accessToken'),
