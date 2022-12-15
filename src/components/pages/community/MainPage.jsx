@@ -36,7 +36,7 @@ function MainPage(props) {
     getPosts().then((response)=>{
       console.log('mainpage response',response);
       setpostList(response);
-      if(localStorage.getItem('memberId')!==0) {
+      if(localStorage.getItem('memberId')!==null) {
         setNewPostButton(true);
         
       }

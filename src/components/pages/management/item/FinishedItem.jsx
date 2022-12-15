@@ -81,8 +81,8 @@ function FinishedItem(props) {
                 openFailModal();
             }
             else {
+                setFinishedList(finishedList.filter((it)=>it.surveyId !== surveyId));
                 closeModal();
-                document.location.href = "/manage";
             }
         })
     }

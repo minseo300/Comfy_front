@@ -59,7 +59,7 @@ const resources = [
 ]
 
 // const clientId="487333198384-nh6ucotf0f9djvv3u6oemopui89d8p7k.apps.googleusercontent.com"; // localhost
-const clientId="375066594508-kl1flcn22d4obsnakir219q4ejm58pir.apps.googleusercontent.com"; // www.commfy.shop
+const clientId="150579669124-iuljf351licgh2lg7s35t1fcn9ct6k2h.apps.googleusercontent.com"; // www.commfy.shop
 
 
 
@@ -132,7 +132,7 @@ function Header() {
                         <a href="/">
                             <span className="sr-only">Your Company</span>
                             <img
-                                className="h-25 w-25 sm:h-20"
+                                className="h-1/5 w-1/5 sm:h-20"
                                 src={logo}
                                 alt=""
                             />

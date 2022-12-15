@@ -83,8 +83,9 @@ function SurveyingItem() {
     function finishSurvey(surveyId) {
         finishSelectedSurvey(surveyId).then(res => {
             console.log(res);
+            setSurveyingList(surveyingList.filter((it) => it.surveyId !== surveyId));
+            setTimeout(function() {window.location.reload()},300);
             closeModal();
-            window.location.reload();
         })
     }
 
@@ -101,8 +102,9 @@ function SurveyingItem() {
     function deleteSurvey(surveyId) {
         deleteSelectSurvey(surveyId).then(res => {
             console.log(res);
-            closeModal();
-            window.location.reload();
+            //window.location.reload();
+            setSurveyingList(surveyingList.filter((it) => it.surveyId !== surveyId));
+            closeDeleteModal();
         })
     }
 

@@ -80,8 +80,8 @@ function showDeleteModal(surveyId) {
   function deleteSurvey(surveyId) {
     deleteSelectSurvey(surveyId).then(res => {
         console.log(res);
-        closeModal();
-        window.location.reload();
+        closeDeleteModal();
+        setSurveyList(surveyList.filter((it) => it.surveyId !== surveyId));
     })
 }
 

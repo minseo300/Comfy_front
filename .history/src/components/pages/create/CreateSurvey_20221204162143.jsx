@@ -133,7 +133,7 @@ function Share_modal() {
                 setId(response.data.result)
                 setShare(true)
                 const surveyId=response.data.result;
-                // postSurveyThumbnail(surveyId);
+                postSurveyThumbnail(surveyId);
             }
         })
     }
@@ -282,7 +282,7 @@ function CreateSurveySend() {
                                 console.log('response data',response.data);
                                 console.log('after post survey: surveyId - ',surveyId);
                             }
-                            setTimeout(function() {navigate(`/temporary`)},500);
+                            navigate(`/temporary`)
                         }
                         else{
                             setDisabled(false)

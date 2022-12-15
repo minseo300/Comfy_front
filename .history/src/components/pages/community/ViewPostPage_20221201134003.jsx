@@ -72,11 +72,7 @@ function ViewPostPage(props){
             <div class='flex flex-row h-screen items-center md:w-full justify-center'>
                     <div class='flex flex-row justify-center md:w-full md:h-screen mt-40'>
                         <div class='flex flex-col' onClick={()=>{
-                            // 피설문자가 보는 화면으로 연결 -> 그 약간 설문지 미리보기 느낌~
-                            // dispatch({
-                            //     type:"reset_template"
-                            // })
-                            // navigate(`/manage/survey/${survey.surveyId}`)
+                        // 피설문자가 보는 화면으로 연결 -> 그 약간 설문지 미리보기 느낌~
                         }}>
                             <img class="md:w-full md:h-4/6 md:rounded-xl" src={thumbnail}/>
                             <div class='font-bold md:h-1/6 text-center text-2xl mt-5 text-sky-500 dark:text-sky-400'>
@@ -125,7 +121,7 @@ function ViewPostPage(props){
                                                 deleteMyPost(post.postId).then((response)=>{
                                                     navigate('/myPage');
                                                 })
-                                     }}/>}
+                                            }}/>}
                                     </div>}
                                 </div>
                                 <div class='font-medium text-start text-slate-500 mb-5'>
